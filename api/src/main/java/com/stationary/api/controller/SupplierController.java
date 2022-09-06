@@ -1,7 +1,7 @@
 package com.stationary.api.controller;
 
+import com.stationary.api.dto.ListResponse;
 import com.stationary.api.dto.SupplierDto;
-import com.stationary.api.dto.SuppliersResponse;
 import com.stationary.api.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import javax.validation.Valid;
 public class SupplierController {
 
     @GetMapping
-    public SuppliersResponse getSuppliers(
+    public ListResponse<SupplierDto> getSuppliers(
             @RequestParam(name = "pageNumber", value = "0") Integer pageNumber,
             @RequestParam(name = "sizePage", value = "10") Integer sizePage,
             @RequestParam(name = "sortBy", value = "id") String sortBy,
@@ -42,9 +42,8 @@ public class SupplierController {
     }
 
     @PutMapping("/{supplierId}")
-    public ResponseEntity<SupplierDto> updateSupplier(@PathVariable(name = "supplierId") Integer supplierId, @Valid @RequestBody SupplierDto supplierDto) {
-        SupplierDto updatedSupplier = supplierService.updateSupplier(supplierId, supplierDto);
-        return new ResponseEntity<>(updatedSupplier, HttpStatus.OK);
+    public SupplierDto updateSupplier(@PathVariable(name = "supplierId") Integer supplierId, @Valid @RequestBody SupplierDto supplierDto) {
+        return supplierService.updateSupplier(supplierId, supplierDto);
     }
 
     @Autowired

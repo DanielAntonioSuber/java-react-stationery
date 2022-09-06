@@ -1,7 +1,7 @@
 package com.stationary.api.service;
 
+import com.stationary.api.dto.ListResponse;
 import com.stationary.api.dto.SupplierDto;
-import com.stationary.api.dto.SuppliersResponse;
 import com.stationary.api.entitie.Supplier;
 import com.stationary.api.exceptions.ResourceNotFoundException;
 import com.stationary.api.repository.SupplierRepository;
@@ -31,7 +31,7 @@ public class SupplierServiceImp implements SupplierService {
     }
 
     @Override
-    public SuppliersResponse getSuppliers(int pageNumber, int sizePage, String sortBy, String sortDir) {
+    public ListResponse<SupplierDto> getSuppliers(int pageNumber, int sizePage, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
@@ -43,7 +43,7 @@ public class SupplierServiceImp implements SupplierService {
 
         List<SupplierDto> content = supplierList.stream().map(this::mapToDto).toList();
 
-        var supplierResponse =  new SuppliersResponse();
+        var supplierResponse =  new ListResponse<SupplierDto>();
         supplierResponse.setContent(content);
         supplierResponse.setLast(pageSupplier.isLast());
         supplierResponse.setPageNumber(pageNumber);
@@ -89,7 +89,6 @@ public class SupplierServiceImp implements SupplierService {
         supplier.setRfc(supplierDto.getRfc());
 
         return supplier;
-
     }
 
     @Autowired

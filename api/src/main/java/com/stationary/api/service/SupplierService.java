@@ -1,7 +1,7 @@
 package com.stationary.api.service;
 
+import com.stationary.api.dto.ListResponse;
 import com.stationary.api.dto.SupplierDto;
-import com.stationary.api.dto.SuppliersResponse;
 
 public interface SupplierService {
 
@@ -9,7 +9,7 @@ public interface SupplierService {
 
     SupplierDto getSupplierById(Integer supplierId);
 
-    SuppliersResponse getSuppliers(int pageNumber, int sizePage, String sortBy, String sortDir);
+    ListResponse<SupplierDto> getSuppliers(int pageNumber, int sizePage, String sortBy, String sortDir);
 
     SupplierDto updateSupplier(Integer supplierId, SupplierDto supplierDto);
 
