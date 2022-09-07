@@ -5,7 +5,7 @@ import com.stationary.api.dto.SupplierDto;
 import com.stationary.api.entitie.Supplier;
 import com.stationary.api.exceptions.ResourceNotFoundException;
 import com.stationary.api.repository.SupplierRepository;
-import lombok.Getter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +26,7 @@ public class SupplierServiceImp implements SupplierService {
 
     @Override
     public SupplierDto getSupplierById(Integer supplierId) {
-        Supplier supplierFound = supplierRepository.findById(supplierId).orElseThrow(() -> new ResourceNotFoundException(SupplierServiceImp.SUPPLIER, "id", supplierId));
+        Supplier supplierFound = supplierRepository.findById(supplierId).orElseThrow(() -> new ResourceNotFoundException(SUPPLIER, "id", supplierId + ""));
         return mapToDto(supplierFound);
     }
 
@@ -43,7 +43,7 @@ public class SupplierServiceImp implements SupplierService {
 
         List<SupplierDto> content = supplierList.stream().map(this::mapToDto).toList();
 
-        var supplierResponse =  new ListResponse<SupplierDto>();
+        var supplierResponse = new ListResponse<SupplierDto>();
         supplierResponse.setContent(content);
         supplierResponse.setLast(pageSupplier.isLast());
         supplierResponse.setPageNumber(pageNumber);
@@ -56,7 +56,7 @@ public class SupplierServiceImp implements SupplierService {
 
     @Override
     public SupplierDto updateSupplier(Integer supplierId, SupplierDto supplierDto) {
-        Supplier supplierFound = supplierRepository.findById(supplierId).orElseThrow(() -> new ResourceNotFoundException(SupplierServiceImp.SUPPLIER, "id", supplierId));
+        Supplier supplierFound = supplierRepository.findById(supplierId).orElseThrow(() -> new ResourceNotFoundException(SUPPLIER, "id", supplierId + ""));
 
         supplierFound.setSupplierName(supplierDto.getSupplierName());
         supplierFound.setRfc(supplierDto.getRfc());
@@ -68,32 +68,25 @@ public class SupplierServiceImp implements SupplierService {
 
     @Override
     public void deleteSupplierById(Integer supplierId) {
-        Supplier supplierFound = supplierRepository.findById(supplierId).orElseThrow(() -> new ResourceNotFoundException(SupplierServiceImp.SUPPLIER, "id", supplierId));
+        Supplier supplierFound = supplierRepository.findById(supplierId).orElseThrow(() -> new ResourceNotFoundException(SUPPLIER, "id", supplierId + ""));
 
         supplierRepository.delete(supplierFound);
     }
 
     private SupplierDto mapToDto(Supplier supplier) {
-        var supplierDto = new SupplierDto();
-        supplierDto.setId(supplier.getId());
-        supplierDto.setSupplierName(supplier.getSupplierName());
-        supplierDto.setRfc(supplier.getRfc());
-
-        return supplierDto;
+        return modelMapper.map(supplier, SupplierDto.class);
     }
 
     private Supplier mapToEntity(SupplierDto supplierDto) {
-        var supplier = new Supplier();
-        supplier.setId(supplierDto.getId());
-        supplier.setSupplierName(supplierDto.getSupplierName());
-        supplier.setRfc(supplierDto.getRfc());
-
-        return supplier;
+        return modelMapper.map(supplierDto, Supplier.class);
     }
+
 
     @Autowired
     private SupplierRepository supplierRepository;
 
-    @Getter
-    public static final String SUPPLIER  = "Supplier";
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public static final String SUPPLIER = "Supplier";
 }
