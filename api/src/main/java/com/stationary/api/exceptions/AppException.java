@@ -2,10 +2,10 @@ package com.stationary.api.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-public class BlogAppException extends RuntimeException {
+public class AppException extends RuntimeException {
 
 
-    public BlogAppException(HttpStatus httpStatus, String message) {
+    public AppException(HttpStatus httpStatus, String message) {
         super(message);
         this.httpStatus = httpStatus;
     }

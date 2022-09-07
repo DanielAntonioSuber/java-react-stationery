@@ -43,8 +43,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetail, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(BlogAppException.class)
-    public ResponseEntity<ErrorDetails> blogExceptionHandler(BlogAppException exception, WebRequest webRequest ) {
+    @ExceptionHandler(AppException.class)
+    public ResponseEntity<ErrorDetails> blogExceptionHandler(AppException exception, WebRequest webRequest ) {
         var errorDetail = new ErrorDetails(new Date(), exception.getMessage(), webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetail, exception.getHttpStatus());
     }

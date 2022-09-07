@@ -2,7 +2,7 @@ package com.stationary.api.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
 
-    public ResourceNotFoundException(String resourceName, String fieldname, long fieldvalue) {
+    public ResourceNotFoundException(String resourceName, String fieldname, String fieldvalue) {
         super(String.format("%s No found with: %s : '%s'", resourceName, fieldname, fieldvalue));
         this.resourceName = resourceName;
     }
