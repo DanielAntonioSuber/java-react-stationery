@@ -12,14 +12,12 @@ public interface EmployeeService {
 
     EmployeeDto getEmployeeByRfc(String rfc);
 
+    EmployeeDto getEmployeeByEmail(String email);
+
     ListResponse<EmployeeDto> getEmployees(int pageNumber, int sizePage, String sortBy, String sortDir);
 
     EmployeeDto updateEmployeeById(Integer employeeId, EmployeeRequest employeeRequest);
 
-    EmployeeDto updateEmployeeByRfc(String rfc, EmployeeRequest employeeRequest);
-
     void deleteEmployeeById(Integer employeeId);
-
-    void deleteEmployeeByRfc(String rfc);
 
 }

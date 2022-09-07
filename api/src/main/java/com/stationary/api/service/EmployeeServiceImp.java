@@ -15,9 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class EmployeeServiceImp implements EmployeeService {
     @Override
     public EmployeeDto createEmployee(EmployeeRequest employeeRequest) {
@@ -70,21 +72,14 @@ public class EmployeeServiceImp implements EmployeeService {
     }
 
     @Override
-    public EmployeeDto updateEmployeeById(Integer employeeId, EmployeeRequest employeeRequest) {
-        Employee employeeFound = employeeRepository.findById(employeeId).orElseThrow(() -> new ResourceNotFoundException(EMPLOYEE, "Id", employeeId + ""));
-
-        Employee employee = mapToEntity(employeeRequest);
-        employee.setId(employeeFound.getId());
-        employee.setPassword(passwordEncoder.encode(employeeRequest.getPassword()));
-
-        Employee employeeUpdated = employeeRepository.save(employee);
-
-        return mapToDto(employeeUpdated);
+    public EmployeeDto getEmployeeByEmail(String email) {
+        Employee employeeFound = employeeRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(EMPLOYEE, "Email", email));
+        return mapToDto(employeeFound);
     }
 
     @Override
-    public EmployeeDto updateEmployeeByRfc(String rfc, EmployeeRequest employeeRequest) {
-        Employee employeeFound = employeeRepository.findByRfc(rfc).orElseThrow(() -> new ResourceNotFoundException(EMPLOYEE, "Id", rfc));
+    public EmployeeDto updateEmployeeById(Integer employeeId, EmployeeRequest employeeRequest) {
+        Employee employeeFound = employeeRepository.findById(employeeId).orElseThrow(() -> new ResourceNotFoundException(EMPLOYEE, "Id", employeeId + ""));
 
         Employee employee = mapToEntity(employeeRequest);
         employee.setId(employeeFound.getId());
@@ -100,10 +95,6 @@ public class EmployeeServiceImp implements EmployeeService {
         employeeRepository.deleteById(employeeId);
     }
 
-    @Override
-    public void deleteEmployeeByRfc(String rfc) {
-        employeeRepository.deleteByRfc(rfc);
-    }
 
     private Employee mapToEntity(EmployeeRequest employeeRequest) {
         return modelMapper.map(employeeRequest, Employee.class);

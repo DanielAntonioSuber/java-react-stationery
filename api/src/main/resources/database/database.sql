@@ -14,6 +14,7 @@ CREATE TABLE `employees` (
     `updated_at` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `employee_rfc_key`(`rfc`),
+    UNIQUE INDEX `employee_email_key`(`email`),
     PRIMARY KEY (`id`)
 );
 

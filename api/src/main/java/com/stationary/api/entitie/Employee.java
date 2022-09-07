@@ -13,7 +13,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "employee", indexes = {
-        @Index(name = "employee_rfc_key", columnList = "rfc", unique = true)
+        @Index(name = "employee_rfc_key", columnList = "rfc", unique = true),
+        @Index(name = "employee_email_key", columnList = "email", unique = true)
 })
 @Getter
 @Setter
