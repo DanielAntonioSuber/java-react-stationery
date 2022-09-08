@@ -1,10 +1,11 @@
-package com.stationary.api.service;
+package com.stationary.api.service.impl;
 
 import com.stationary.api.dto.ListResponse;
 import com.stationary.api.dto.SupplierDto;
 import com.stationary.api.entitie.Supplier;
 import com.stationary.api.exceptions.ResourceNotFoundException;
 import com.stationary.api.repository.SupplierRepository;
+import com.stationary.api.service.SupplierService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

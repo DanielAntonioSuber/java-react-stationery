@@ -1,4 +1,4 @@
-package com.stationary.api.service;
+package com.stationary.api.service.impl;
 
 import com.stationary.api.dto.EmployeeDto;
 import com.stationary.api.dto.EmployeeRequest;
@@ -7,6 +7,7 @@ import com.stationary.api.entitie.Employee;
 import com.stationary.api.exceptions.AppException;
 import com.stationary.api.exceptions.ResourceNotFoundException;
 import com.stationary.api.repository.EmployeeRepository;
+import com.stationary.api.service.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
