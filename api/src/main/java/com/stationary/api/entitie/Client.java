@@ -12,7 +12,7 @@ import java.util.List;
 @Getter @Setter
 public class Client {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
