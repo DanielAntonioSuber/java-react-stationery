@@ -2,9 +2,12 @@ package com.stationary.api.entitie;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Entity
@@ -13,6 +16,7 @@ import java.util.List;
 public class Product {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer code;
 
     @Column(name = "article_name")
@@ -27,6 +31,16 @@ public class Product {
     private Integer amount;
 
     private String brand;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.DATE)
+    @Column(name = "created_at")
+    private Calendar createdAt;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.DATE)
+    @Column(name = "updated_at")
+    private Calendar updatedAt;
 
     @OneToMany(mappedBy = "product", orphanRemoval = true)
     private List<Sale> sales = new ArrayList<>();

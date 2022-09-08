@@ -17,7 +17,7 @@ import java.util.Collections;
 public class UserDetailServiceImp implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Employee employee = employeeRepository.findByEmailOrRfc(username).orElseThrow(() -> new ResourceNotFoundException("Employee", "Email or Rfc", username));
+        Employee employee = employeeRepository.findByEmailOrRfc(username, username).orElseThrow(() -> new ResourceNotFoundException("Employee", "Email or Rfc", username));
 
         return new User(employee.getEmail(), employee.getPassword(), Collections.singleton(new SimpleGrantedAuthority(employee.getRole().toString())));
     }

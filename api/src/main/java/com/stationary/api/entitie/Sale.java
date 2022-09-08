@@ -14,6 +14,7 @@ import java.util.Calendar;
 public class Sale {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private Float price;
@@ -27,7 +28,7 @@ public class Sale {
     private Calendar saleDate;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = true)
+    @JoinColumn(name = "client_id")
     private Client client;
 
     @ManyToOne

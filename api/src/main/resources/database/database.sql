@@ -44,6 +44,8 @@ CREATE TABLE `products` (
     `amount` INTEGER NOT NULL,
     `brand` VARCHAR(255) NOT NULL,
     `supplier_id` INTEGER NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`code`)
 );

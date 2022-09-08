@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "employee", indexes = {
+@Table(name = "employees", indexes = {
         @Index(name = "employee_rfc_key", columnList = "rfc", unique = true),
         @Index(name = "employee_email_key", columnList = "email", unique = true)
 })
@@ -21,6 +21,7 @@ import java.util.List;
 public class Employee {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;

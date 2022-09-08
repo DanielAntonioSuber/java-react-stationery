@@ -1,13 +1,9 @@
 package com.stationary.api.dto;
 
-import com.stationary.api.entitie.Role;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -25,26 +21,31 @@ public class EmployeeRequest {
 
     @NotEmpty
     @Pattern(regexp = "ADMIN|SELLER")
-    private Role role;
+    private String role;
 
+    @NotEmpty
     @Email
     private String email;
 
     @NotEmpty
     private String direction;
 
-    @NotEmpty
+    @NotNull
     private Float salary;
 
+    @NotEmpty
     @Size(min = 4)
     private String schedule;
 
-    @Size(max = 20, min = 20)
+    @NotEmpty
+    @Size(max = 13, min = 12)
     private String rfc;
 
+    @NotEmpty
     @Size(min = 8)
     private String phoneNumber;
 
+    @NotEmpty
     @Size(min = 8)
     private String password;
 

@@ -24,7 +24,7 @@ import java.util.List;
 public class EmployeeServiceImp implements EmployeeService {
     @Override
     public EmployeeDto createEmployee(EmployeeRequest employeeRequest) {
-        if (employeeRepository.existsByRfc(employeeRequest.getRfc())) {
+        if (Boolean.TRUE.equals(employeeRepository.existsByRfc(employeeRequest.getRfc()))) {
             throw new AppException(HttpStatus.BAD_REQUEST, "The employee is exists");
         }
 

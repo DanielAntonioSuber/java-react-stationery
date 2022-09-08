@@ -16,10 +16,10 @@ public class SupplierController {
 
     @GetMapping
     public ListResponse<SupplierDto> getSuppliers(
-            @RequestParam(name = "pageNumber", value = "0") Integer pageNumber,
-            @RequestParam(name = "sizePage", value = "10") Integer sizePage,
-            @RequestParam(name = "sortBy", value = "id") String sortBy,
-            @RequestParam(name = "sortDir", value = "ASC") String sortDir
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "sizePage", defaultValue = "10") Integer sizePage,
+            @RequestParam(name = "sortBy", defaultValue = "id") String sortBy,
+            @RequestParam(name = "sortDir", defaultValue = "ASC") String sortDir
     ) {
         return supplierService.getSuppliers(pageNumber, sizePage, sortBy, sortDir);
     }

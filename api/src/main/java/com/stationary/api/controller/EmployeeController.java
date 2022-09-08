@@ -10,10 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("/api/employees")
 public class EmployeeController {
 
     @GetMapping("/id/{employeeId}")
@@ -27,18 +26,20 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public ListResponse<EmployeeDto> getEmployees(@RequestParam(name = "pageNumber", value = "0") Integer pageNumber,
-                                                  @RequestParam(name = "sizePage", value = "10") Integer sizePage,
-                                                  @RequestParam(name = "sortBy", value = "id") String sortBy,
-                                                  @RequestParam(name = "sortDir", value = "ASC") String sortDir) {
+    public ListResponse<EmployeeDto> getEmployees(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "sizePage", defaultValue = "10") Integer sizePage,
+            @RequestParam(name = "sortBy", defaultValue = "id") String sortBy,
+            @RequestParam(name = "sortDir", defaultValue = "ASC") String sortDir) {
+
         return employeeService.getEmployees(pageNumber, sizePage, sortBy, sortDir);
     }
 
     @PutMapping("/{employeeId}")
-    public ResponseEntity<String> updateEmployee(@PathVariable("employeeId") Integer employeeId, @Valid @RequestBody EmployeeRequest employeeRequest) {
-        employeeService.updateEmployeeById(employeeId, employeeRequest);
+    public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable("employeeId") Integer employeeId, @Valid @RequestBody EmployeeRequest employeeRequest) {
+        EmployeeDto updatedEmployee = employeeService.updateEmployeeById(employeeId, employeeRequest);
 
-        return new ResponseEntity<>("Was updated", HttpStatus.OK);
+        return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
     }
 
     @DeleteMapping("/{employeeId}")
