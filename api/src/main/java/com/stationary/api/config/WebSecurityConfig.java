@@ -1,5 +1,6 @@
 package com.stationary.api.config;
 
+import com.stationary.api.security.CustomDetailService;
 import com.stationary.api.security.JwtAuthenticationEntryPoint;
 import com.stationary.api.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,13 @@ public class WebSecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    @Bean
+    public CustomDetailService customDetailService() {
+        return new CustomDetailService();
+    }
+
     @Autowired
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
+
 
 }
