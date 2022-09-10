@@ -10,8 +10,8 @@ import java.util.Calendar;
 public class ProductDto {
     private Integer code;
     private String articleName;
-    private String wholesalePrice;
-    private String retailPrice;
+    private Float wholesalePrice;
+    private Float retailPrice;
     private Integer amount;
     private String brand;
     private Calendar createdAt;
