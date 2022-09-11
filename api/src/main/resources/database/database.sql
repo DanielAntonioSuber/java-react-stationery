@@ -39,8 +39,8 @@ CREATE TABLE `suppliers` (
 CREATE TABLE `products` (
     `code` INTEGER NOT NULL AUTO_INCREMENT,
     `article_name` VARCHAR(255) NOT NULL,
-    `wholesale_price` FLOAT UNSIGNED NOT NULL,
-    `retail_price` FLOAT UNSIGNED NOT NULL,
+    `wholesale_price` FLOAT NOT NULL,
+    `retail_price` FLOAT NOT NULL,
     `amount` INTEGER UNSIGNED NOT NULL,
     `brand` VARCHAR(255) NOT NULL,
     `supplier_id` INTEGER NOT NULL,
@@ -56,9 +56,9 @@ CREATE TABLE `sales` (
     `product_code` INTEGER NOT NULL,
     `employee_id` INTEGER NOT NULL,
     `client_id` INTEGER,
-    `price` FLOAT UNSIGNED NOT NULL,
+    `price` FLOAT  NOT NULL,
     `amount` INTEGER UNSIGNED NOT NULL,
-    `total` FLOAT UNSIGNED NOT NULL,
+    `total` FLOAT  NOT NULL,
     `sale_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY(`id`)
