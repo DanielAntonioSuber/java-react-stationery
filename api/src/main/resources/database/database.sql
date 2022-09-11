@@ -28,7 +28,7 @@ CREATE TABLE `clients` (
 );
 
 CREATE TABLE `suppliers` (
-    `id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `supplier_name` VARCHAR(255) NOT NULL,
     `rfc` VARCHAR(255) NOT NULL,
 
@@ -71,4 +71,5 @@ ALTER TABLE `sales` ADD CONSTRAINT `sales_product_code_fkey` FOREIGN KEY (`produ
 ALTER TABLE `sales` ADD CONSTRAINT `sales_client_id_fkey` FOREIGN KEY (`client_id`) REFERENCES `clients`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 ALTER TABLE `products` ADD CONSTRAINT `products_supplier_id_fkey` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
 
