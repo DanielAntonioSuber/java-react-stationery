@@ -32,6 +32,7 @@ public class EmployeeServiceImp implements EmployeeService {
         employee.setPassword(passwordEncoder.encode(employeeRequest.getPassword()));
 
         Employee savedEmployee = employeeRepository.save(employee);
+        savedEmployee.setPassword(null);
 
         return mapToDto(savedEmployee);
     }

@@ -7,8 +7,12 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "suppliers")
-@Getter @Setter
+@Table(name = "suppliers", indexes = {
+        @Index(name = "supplier_name_key", columnList = "supplier_name", unique = true),
+        @Index(name = "supplier_rfc_key", columnList = "rfc", unique = true)
+})
+@Getter
+@Setter
 public class Supplier {
 
     @Id

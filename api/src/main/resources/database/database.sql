@@ -32,7 +32,9 @@ CREATE TABLE `suppliers` (
     `supplier_name` VARCHAR(255) NOT NULL,
     `rfc` VARCHAR(255) NOT NULL,
 
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `supplier_name_key`(`supplier_name`),
+    UNIQUE INDEX `supplier_rfc_key`(`rfc`)
 );
 
 

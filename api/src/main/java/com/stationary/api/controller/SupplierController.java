@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(name = "/api/supplier")
+@RequestMapping("/api/suppliers")
 public class SupplierController {
 
     @GetMapping
