@@ -12,7 +12,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "products")
-@Getter @Setter
+@Getter
+@Setter
 public class Product {
 
     @Id
@@ -42,11 +43,14 @@ public class Product {
     @Column(name = "updated_at")
     private Calendar updatedAt;
 
-    @OneToMany(mappedBy = "product", orphanRemoval = true)
-    private List<Sale> sales = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
+
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    private List<Sale> sales = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    private List<ProductImage> productImages = new ArrayList<>();
 
 }

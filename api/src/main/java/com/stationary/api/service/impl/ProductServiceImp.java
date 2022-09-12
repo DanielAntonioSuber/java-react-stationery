@@ -3,26 +3,58 @@ package com.stationary.api.service.impl;
 import com.stationary.api.dto.ListResponse;
 import com.stationary.api.dto.ProductDto;
 import com.stationary.api.entitie.Product;
+import com.stationary.api.entitie.ProductImage;
 import com.stationary.api.entitie.Supplier;
+import com.stationary.api.exceptions.AppException;
 import com.stationary.api.exceptions.ResourceNotFoundException;
 import com.stationary.api.repository.ProductRepository;
 import com.stationary.api.repository.SupplierRepository;
 import com.stationary.api.service.ProductService;
+import com.stationary.api.utils.AppConstansts;
+import com.stationary.api.utils.FileUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class ProductServiceImp implements ProductService {
     @Override
-    public ProductDto addProduct(ProductDto productDto) {
-        Product newProduct = productRepository.save(mapToEntity(productDto));
+    public ProductDto addProduct(ProductDto productDto,  MultipartFile[] multipartFiles) {
+        AtomicInteger count = new AtomicInteger();
+        Product product = mapToEntity(productDto);
+
+        List<ProductImage> productImages = Arrays.stream(multipartFiles).map(multipartFile -> {
+            int number = count.getAndIncrement();
+            String fileName = product.getArticleName() + "-" + number + "-" + new GregorianCalendar();
+            Path uploadPath = Paths.get(AppConstansts.IMAGES_DIR);
+            try {
+                FileUtils.saveFile(uploadPath, fileName, multipartFile);
+                return new ProductImage(fileName, uploadPath.toAbsolutePath().toString());
+            } catch (IOException e) {
+                throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error to upload file");
+            }
+
+        }).toList();
+
+        product.setProductImages(productImages);
+
+        Product newProduct = productRepository.save(product);
+
         return mapToDto(newProduct);
     }
 
@@ -57,8 +89,8 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ProductDto updateProduct(Integer code, ProductDto productDto) {
-        Product productFound = productRepository.findById(code)
+    public ProductDto updateProduct(Integer code, ProductDto productDto, MultipartFile[] multipartFiles) throws Exception {
+        /*Product productFound = productRepository.findById(code)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", code + ""));
         Supplier supplier = supplierRepository.findById(productDto.getSupplierId())
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", productDto.getSupplierId() + ""));
@@ -72,7 +104,8 @@ public class ProductServiceImp implements ProductService {
 
         Product productUpdated = productRepository.save(productFound);
 
-        return mapToDto(productUpdated);
+        return mapToDto(productUpdated);*/
+        return null;
     }
 
     @Override

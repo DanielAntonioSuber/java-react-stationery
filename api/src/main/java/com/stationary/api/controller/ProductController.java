@@ -5,8 +5,10 @@ import com.stationary.api.dto.ProductDto;
 import com.stationary.api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -14,9 +16,9 @@ import javax.validation.Valid;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    @PostMapping
-    public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productDto) {
-            return new ResponseEntity<>(productService.addProduct(productDto), HttpStatus.CREATED);
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ProductDto> createProduct(@Valid @RequestPart("product") ProductDto productDto,@RequestPart("imageFiles") MultipartFile[] multipartFile) {
+        return new ResponseEntity<>(productService.addProduct(productDto, multipartFile), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -34,9 +36,9 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProduct(code), HttpStatus.OK);
     }
 
-    @PutMapping("/{code}")
-    public ResponseEntity<ProductDto> updateProductByCode(@PathVariable("code") Integer code, @Valid @RequestBody ProductDto productDto) {
-        ProductDto updatedProduct = productService.updateProduct(code, productDto);
+    @PutMapping(name = "/{code}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ProductDto> updateProductByCode(@PathVariable("code") Integer code, @Valid @RequestPart("product") ProductDto productDto, @RequestPart("imageFiles") MultipartFile[] multipartFiles) {
+        ProductDto updatedProduct = productService.updateProduct(code, productDto, multipartFiles);
 
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
