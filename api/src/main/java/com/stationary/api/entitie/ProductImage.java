@@ -9,16 +9,17 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "product_images", uniqueConstraints = {
-        @UniqueConstraint(name = "product_images_path_key", columnNames = {"path"})
+        @UniqueConstraint(name = "product_images_name_key", columnNames = {"name"})
 })
 @Getter
 @Setter
 @NoArgsConstructor
 public class ProductImage {
 
-    public ProductImage(String name, String path) {
+    public ProductImage(String name, String path, Product product) {
         this.name = name;
         this.path = path;
+        this.product = product;
     }
 
     @Id

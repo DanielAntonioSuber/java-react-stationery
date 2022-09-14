@@ -73,7 +73,7 @@ CREATE TABLE `product_images` (
     `product_code` INTEGER NOT NULL,
 
     PRIMARY KEY(`id`),
-    UNIQUE INDEX `product_images_path_key`(`path`)
+    UNIQUE INDEX `product_images_name_key`(`name`)
 );
 
 ALTER TABLE `sales` ADD CONSTRAINT `sales_employee_id_fkey` FOREIGN KEY (`employee_id`) REFERENCES `employees`(`id`) ON DELETE  RESTRICT ON UPDATE CASCADE;

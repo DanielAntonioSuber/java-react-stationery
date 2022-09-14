@@ -21,12 +21,12 @@ public class ProductController {
         return new ResponseEntity<>(productService.addProduct(productDto, multipartFile), HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<ListResponse<ProductDto>> getProducts(
-            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "sizePage", defaultValue = "10") Integer sizePage,
-            @RequestParam(name = "sortBy", defaultValue = "id") String sortBy,
-            @RequestParam(name = "sortDir", defaultValue = "ASC") String sortDir
+            @RequestParam(name = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(name = "sizePage", defaultValue = "10",required = false) Integer sizePage,
+            @RequestParam(name = "sortBy", defaultValue = "code",required = false) String sortBy,
+            @RequestParam(name = "sortDir", defaultValue = "ASC", required = false) String sortDir
     ) {
         return new ResponseEntity<>(productService.getProducts(pageNumber, sizePage, sortBy, sortDir), HttpStatus.OK);
     }
@@ -38,7 +38,7 @@ public class ProductController {
 
     @PutMapping(name = "/{code}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProductDto> updateProductByCode(@PathVariable("code") Integer code, @Valid @RequestPart("product") ProductDto productDto, @RequestPart("imageFiles") MultipartFile[] multipartFiles) {
-        ProductDto updatedProduct = productService.updateProduct(code, productDto, multipartFiles);
+        ProductDto updatedProduct = productService.updateProduct(code, productDto);
 
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }

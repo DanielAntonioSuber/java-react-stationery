@@ -12,7 +12,7 @@ public interface ProductService {
 
     ListResponse<ProductDto> getProducts(int pageNumber, int sizePage, String sortBy, String sortDir);
 
-    ProductDto updateProduct(Integer code, ProductDto productDto, MultipartFile[] multipartFiles) throws Exception;
+    ProductDto updateProduct(Integer code, ProductDto productDto);
 
     void deleteProduct(Integer code);
 

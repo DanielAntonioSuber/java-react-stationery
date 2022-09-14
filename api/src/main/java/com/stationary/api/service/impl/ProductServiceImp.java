@@ -7,6 +7,7 @@ import com.stationary.api.entitie.ProductImage;
 import com.stationary.api.entitie.Supplier;
 import com.stationary.api.exceptions.AppException;
 import com.stationary.api.exceptions.ResourceNotFoundException;
+import com.stationary.api.repository.ProductImageRepository;
 import com.stationary.api.repository.ProductRepository;
 import com.stationary.api.repository.SupplierRepository;
 import com.stationary.api.service.ProductService;
@@ -26,34 +27,34 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class ProductServiceImp implements ProductService {
     @Override
     public ProductDto addProduct(ProductDto productDto,  MultipartFile[] multipartFiles) {
-        AtomicInteger count = new AtomicInteger();
         Product product = mapToEntity(productDto);
+        Product newProduct = productRepository.save(product);
 
-        List<ProductImage> productImages = Arrays.stream(multipartFiles).map(multipartFile -> {
+        AtomicInteger count = new AtomicInteger();
+        Arrays.stream(multipartFiles).forEach(multipartFile -> {
             int number = count.getAndIncrement();
-            String fileName = product.getArticleName() + "-" + number + "-" + new GregorianCalendar();
+
+            String fileName = product.getArticleName() + "-" + number + "-" + new GregorianCalendar().getTimeInMillis() + "." + Objects.requireNonNull(multipartFile.getContentType()).split("image/")[1];
             Path uploadPath = Paths.get(AppConstansts.IMAGES_DIR);
+
             try {
+                var productImage = new ProductImage(fileName, uploadPath.toString(), newProduct);
+                productImageRepository.save(productImage);
                 FileUtils.saveFile(uploadPath, fileName, multipartFile);
-                return new ProductImage(fileName, uploadPath.toAbsolutePath().toString());
             } catch (IOException e) {
                 throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error to upload file");
             }
 
-        }).toList();
-
-        product.setProductImages(productImages);
-
-        Product newProduct = productRepository.save(product);
+        });
 
         return mapToDto(newProduct);
     }
@@ -89,8 +90,8 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ProductDto updateProduct(Integer code, ProductDto productDto, MultipartFile[] multipartFiles) throws Exception {
-        /*Product productFound = productRepository.findById(code)
+    public ProductDto updateProduct(Integer code, ProductDto productDto) {
+        Product productFound = productRepository.findById(code)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", code + ""));
         Supplier supplier = supplierRepository.findById(productDto.getSupplierId())
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", productDto.getSupplierId() + ""));
@@ -104,13 +105,25 @@ public class ProductServiceImp implements ProductService {
 
         Product productUpdated = productRepository.save(productFound);
 
-        return mapToDto(productUpdated);*/
-        return null;
+        return mapToDto(productUpdated);
     }
 
     @Override
     public void deleteProduct(Integer code) {
-        productRepository.deleteById(code);
+        Product productFound = productRepository.findById(code).orElseThrow(() -> new ResourceNotFoundException("Product", "id", code + ""));
+
+        List<ProductImage> images = productFound.getProductImages();
+
+        images.forEach(image -> {
+            Path filePath = Paths.get(image.getPath());
+            try {
+                FileUtils.deleteFile(filePath, image.getName());
+            } catch (IOException e) {
+                throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error");
+            }
+        });
+
+        productRepository.delete(productFound);
     }
 
     private Product mapToEntity(ProductDto productDto) {
@@ -126,6 +139,9 @@ public class ProductServiceImp implements ProductService {
 
     @Autowired
     private SupplierRepository supplierRepository;
+
+    @Autowired
+    private ProductImageRepository productImageRepository;
 
     @Autowired
     private ModelMapper modelMapper;
