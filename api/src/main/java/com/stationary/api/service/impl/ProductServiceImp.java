@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class ProductServiceImp implements ProductService {
     @Override
-    public ProductDto addProduct(ProductDto productDto,  MultipartFile[] multipartFiles) {
+    public ProductDto addProduct(ProductDto productDto, MultipartFile[] multipartFiles) {
         Supplier supplier = supplierRepository.findById(productDto.getSupplierId()).orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", productDto.getSupplierId() + ""));
         Product product = mapToEntity(productDto);
         product.setSupplier(supplier);
@@ -129,11 +129,19 @@ public class ProductServiceImp implements ProductService {
     }
 
     private Product mapToEntity(ProductDto productDto) {
+
         return modelMapper.map(productDto, Product.class);
     }
 
     private ProductDto mapToDto(Product product) {
-        return modelMapper.map(product, ProductDto.class);
+        ProductDto productDto =  modelMapper.typeMap(Product.class, ProductDto.class)
+                .addMappings(mapper -> mapper.skip(ProductDto::setImages)).map(product);
+
+        List<ProductDto.Image> images = product.getProductImages().stream().map(image -> new ProductDto.Image(image.getPath(), image.getName())).toList();
+
+        productDto.setImages(images);
+
+        return productDto;
     }
 
     @Autowired
