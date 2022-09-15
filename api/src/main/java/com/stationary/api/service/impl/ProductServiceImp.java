@@ -11,7 +11,7 @@ import com.stationary.api.repository.ProductImageRepository;
 import com.stationary.api.repository.ProductRepository;
 import com.stationary.api.repository.SupplierRepository;
 import com.stationary.api.service.ProductService;
-import com.stationary.api.utils.AppConstansts;
+import com.stationary.api.utils.AppConstants;
 import com.stationary.api.utils.FileUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ProductServiceImp implements ProductService {
     @Override
     public ProductDto addProduct(ProductDto productDto,  MultipartFile[] multipartFiles) {
+        Supplier supplier = supplierRepository.findById(productDto.getSupplierId()).orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", productDto.getSupplierId() + ""));
         Product product = mapToEntity(productDto);
+        product.setSupplier(supplier);
         Product newProduct = productRepository.save(product);
 
         AtomicInteger count = new AtomicInteger();
@@ -44,7 +46,7 @@ public class ProductServiceImp implements ProductService {
             int number = count.getAndIncrement();
 
             String fileName = product.getArticleName() + "-" + number + "-" + new GregorianCalendar().getTimeInMillis() + "." + Objects.requireNonNull(multipartFile.getContentType()).split("image/")[1];
-            Path uploadPath = Paths.get(AppConstansts.IMAGES_DIR);
+            Path uploadPath = Paths.get(AppConstants.IMAGES_DIR);
 
             try {
                 var productImage = new ProductImage(fileName, uploadPath.toString(), newProduct);
