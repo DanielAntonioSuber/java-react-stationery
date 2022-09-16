@@ -1,3 +1,7 @@
+CREATE DATABASE `stationery_spring_react`;
+
+USE `stationery_spring_react`;
+
 CREATE TABLE `employees` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
@@ -49,7 +53,8 @@ CREATE TABLE `products` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
-    PRIMARY KEY (`code`)
+    PRIMARY KEY (`code`),
+    UNIQUE INDEX `product_article_name_brand_key`(`article_name`, `brand`)
 );
 
 

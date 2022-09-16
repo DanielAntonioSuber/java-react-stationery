@@ -45,13 +45,14 @@ public class ProductServiceImp implements ProductService {
         Arrays.stream(multipartFiles).forEach(multipartFile -> {
             int number = count.getAndIncrement();
 
-            String fileName = product.getArticleName() + "-" + number + "-" + new GregorianCalendar().getTimeInMillis() + "." + Objects.requireNonNull(multipartFile.getContentType()).split("image/")[1];
+            String fileName = product.getArticleName() + "-" + number + "-" + new GregorianCalendar().getTimeInMillis();
+            String fileExt = "." + Objects.requireNonNull(multipartFile.getContentType()).split("image/")[1];
             Path uploadPath = Paths.get(AppConstants.IMAGES_DIR);
 
             try {
-                var productImage = new ProductImage(fileName, uploadPath.toString(), newProduct);
+                var productImage = new ProductImage(fileName, uploadPath.resolve(fileName + fileExt).toString(), newProduct);
                 productImageRepository.save(productImage);
-                FileUtils.saveFile(uploadPath, fileName, multipartFile);
+                FileUtils.saveFile(uploadPath, fileName + fileExt, multipartFile);
             } catch (IOException e) {
                 throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error to upload file");
             }
@@ -129,15 +130,15 @@ public class ProductServiceImp implements ProductService {
     }
 
     private Product mapToEntity(ProductDto productDto) {
-
         return modelMapper.map(productDto, Product.class);
     }
 
     private ProductDto mapToDto(Product product) {
-        ProductDto productDto =  modelMapper.typeMap(Product.class, ProductDto.class)
+        ProductDto productDto = modelMapper.typeMap(Product.class, ProductDto.class)
                 .addMappings(mapper -> mapper.skip(ProductDto::setImages)).map(product);
 
-        List<ProductDto.Image> images = product.getProductImages().stream().map(image -> new ProductDto.Image(image.getPath(), image.getName())).toList();
+        List<ProductDto.Image> images = product.getProductImages().stream()
+                .map(image -> new ProductDto.Image(image.getPath(), image.getName())).toList();
 
         productDto.setImages(images);
 

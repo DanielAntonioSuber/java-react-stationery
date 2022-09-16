@@ -11,7 +11,9 @@ import java.util.Calendar;
 import java.util.List;
 
 @Entity
-@Table(name = "products")
+@Table(name = "products", indexes = {
+        @Index(name = "product_article_name_brand_key", columnList = "brand, article_name")
+})
 @Getter
 @Setter
 public class Product {
