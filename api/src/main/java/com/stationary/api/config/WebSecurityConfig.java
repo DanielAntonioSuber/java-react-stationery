@@ -32,6 +32,7 @@ public class WebSecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()
+                .antMatchers("/images/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/**").authenticated();
 

@@ -31,12 +31,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorDetails> anyExceptionHandler(Exception exception, WebRequest webRequest ) {
-        var errorDetail = new ErrorDetails(new Date(), exception.getMessage(), webRequest.getDescription(false));
-        return new ResponseEntity<>(errorDetail, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDetails> resourceNotFoundExceptionHandler(ResourceNotFoundException exception, WebRequest webRequest ) {
         var errorDetail = new ErrorDetails(new Date(), exception.getMessage(), webRequest.getDescription(false));
@@ -49,5 +43,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetail, exception.getHttpStatus());
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorDetails> anyExceptionHandler(Exception exception, WebRequest webRequest ) {
+        var errorDetail = new ErrorDetails(new Date(), exception.getMessage(), webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetail, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }

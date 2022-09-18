@@ -18,7 +18,7 @@ public class ProductController {
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProductDto> createProduct(@Valid @RequestPart("product") ProductDto productDto,@RequestPart("imageFiles") MultipartFile[] multipartFile) {
-        return new ResponseEntity<>(productService.addProduct(productDto, multipartFile), HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.addProductToInventory(productDto, multipartFile), HttpStatus.CREATED);
     }
 
     @GetMapping()
@@ -37,7 +37,7 @@ public class ProductController {
     }
 
     @PutMapping(name = "/{code}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ProductDto> updateProductByCode(@PathVariable("code") Integer code, @Valid @RequestPart("product") ProductDto productDto, @RequestPart("imageFiles") MultipartFile[] multipartFiles) {
+    public ResponseEntity<ProductDto> updateProductByCode(@PathVariable("code") Integer code, @Valid @RequestBody ProductDto productDto) {
         ProductDto updatedProduct = productService.updateProduct(code, productDto);
 
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
