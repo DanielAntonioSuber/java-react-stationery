@@ -39,7 +39,8 @@ public class EmployeeServiceImp implements EmployeeService {
 
     @Override
     public EmployeeDto getEmployeeById(Integer employeeId) {
-        Employee employeeFound = employeeRepository.findById(employeeId).orElseThrow(() -> new ResourceNotFoundException(EMPLOYEE, "Id", employeeId + ""));
+        Employee employeeFound = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "Id", employeeId + ""));
         return mapToDto(employeeFound);
     }
 
@@ -69,19 +70,22 @@ public class EmployeeServiceImp implements EmployeeService {
 
     @Override
     public EmployeeDto getEmployeeByRfc(String rfc) {
-        Employee employeeFound = employeeRepository.findByRfc(rfc).orElseThrow(() -> new ResourceNotFoundException(EMPLOYEE, "Rfc", rfc));
+        Employee employeeFound = employeeRepository.findByRfc(rfc)
+                .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "Rfc", rfc));
         return mapToDto(employeeFound);
     }
 
     @Override
     public EmployeeDto getEmployeeByEmail(String email) {
-        Employee employeeFound = employeeRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(EMPLOYEE, "Email", email));
+        Employee employeeFound = employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "Email", email));
         return mapToDto(employeeFound);
     }
 
     @Override
     public EmployeeDto updateEmployeeById(Integer employeeId, EmployeeRequest employeeRequest) {
-        Employee employeeFound = employeeRepository.findById(employeeId).orElseThrow(() -> new ResourceNotFoundException(EMPLOYEE, "Id", employeeId + ""));
+        Employee employeeFound = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "Id", employeeId + ""));
 
         Employee employee = mapToEntity(employeeRequest);
         employee.setId(employeeFound.getId());
@@ -115,5 +119,5 @@ public class EmployeeServiceImp implements EmployeeService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public static final String EMPLOYEE = "Employee";
+    public static final String RESOURCE_NAME = "Employee";
 }

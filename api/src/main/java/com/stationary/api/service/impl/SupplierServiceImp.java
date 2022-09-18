@@ -27,7 +27,7 @@ public class SupplierServiceImp implements SupplierService {
 
     @Override
     public SupplierDto getSupplierById(Integer supplierId) {
-        Supplier supplierFound = supplierRepository.findById(supplierId).orElseThrow(() -> new ResourceNotFoundException(SUPPLIER, "id", supplierId + ""));
+        Supplier supplierFound = supplierRepository.findById(supplierId).orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "id", supplierId + ""));
         return mapToDto(supplierFound);
     }
 
@@ -57,7 +57,7 @@ public class SupplierServiceImp implements SupplierService {
 
     @Override
     public SupplierDto updateSupplier(Integer supplierId, SupplierDto supplierDto) {
-        Supplier supplierFound = supplierRepository.findById(supplierId).orElseThrow(() -> new ResourceNotFoundException(SUPPLIER, "id", supplierId + ""));
+        Supplier supplierFound = supplierRepository.findById(supplierId).orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "id", supplierId + ""));
 
         supplierFound.setSupplierName(supplierDto.getSupplierName());
         supplierFound.setRfc(supplierDto.getRfc());
@@ -69,7 +69,7 @@ public class SupplierServiceImp implements SupplierService {
 
     @Override
     public void deleteSupplierById(Integer supplierId) {
-        Supplier supplierFound = supplierRepository.findById(supplierId).orElseThrow(() -> new ResourceNotFoundException(SUPPLIER, "id", supplierId + ""));
+        Supplier supplierFound = supplierRepository.findById(supplierId).orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "id", supplierId + ""));
 
         supplierRepository.delete(supplierFound);
     }
@@ -89,5 +89,5 @@ public class SupplierServiceImp implements SupplierService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public static final String SUPPLIER = "Supplier";
+    public static final String RESOURCE_NAME = "Supplier";
 }

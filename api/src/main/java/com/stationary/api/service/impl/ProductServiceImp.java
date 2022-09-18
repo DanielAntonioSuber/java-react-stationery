@@ -35,8 +35,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class ProductServiceImp implements ProductService {
     @Override
-    public ProductDto addProduct(ProductDto productDto, MultipartFile[] multipartFiles) {
-        Supplier supplier = supplierRepository.findById(productDto.getSupplierId()).orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", productDto.getSupplierId() + ""));
+    public ProductDto addProductToInventory(ProductDto productDto, MultipartFile[] multipartFiles) {
+        Supplier supplier = supplierRepository.findById(productDto.getSupplierId())
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", productDto.getSupplierId() + ""));
         Product product = mapToEntity(productDto);
         product.setSupplier(supplier);
         Product newProduct = productRepository.save(product);
@@ -47,10 +48,12 @@ public class ProductServiceImp implements ProductService {
 
             String fileName = product.getArticleName() + "-" + number + "-" + new GregorianCalendar().getTimeInMillis();
             String fileExt = "." + Objects.requireNonNull(multipartFile.getContentType()).split("image/")[1];
-            Path uploadPath = Paths.get(AppConstants.IMAGES_DIR);
+            Path uploadPath = Paths.get(AppConstants.RESOURCES_DIR + AppConstants.IMAGES_DIR);
+            Path relativePath = Paths.get(AppConstants.IMAGES_DIR);
 
             try {
-                var productImage = new ProductImage(fileName, uploadPath.resolve(fileName + fileExt).toString(), newProduct);
+                var productImage = new ProductImage(fileName, relativePath
+                        .resolve(fileName + fileExt).toString(), newProduct);
                 productImageRepository.save(productImage);
                 FileUtils.saveFile(uploadPath, fileName + fileExt, multipartFile);
             } catch (IOException e) {
@@ -64,7 +67,8 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public ProductDto getProduct(Integer code) {
-        Product productFound = productRepository.getReferenceById(code);
+        Product productFound = productRepository.findById(code)
+                .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "id", code + ""));
         return mapToDto(productFound);
     }
 
@@ -95,7 +99,7 @@ public class ProductServiceImp implements ProductService {
     @Override
     public ProductDto updateProduct(Integer code, ProductDto productDto) {
         Product productFound = productRepository.findById(code)
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", code + ""));
+                .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "id", code + ""));
         Supplier supplier = supplierRepository.findById(productDto.getSupplierId())
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", productDto.getSupplierId() + ""));
 
@@ -113,14 +117,14 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public void deleteProduct(Integer code) {
-        Product productFound = productRepository.findById(code).orElseThrow(() -> new ResourceNotFoundException("Product", "id", code + ""));
+        Product productFound = productRepository.findById(code).orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "id", code + ""));
 
         List<ProductImage> images = productFound.getProductImages();
 
         images.forEach(image -> {
-            Path filePath = Paths.get(image.getPath());
+            Path filePath = Paths.get(AppConstants.RESOURCES_DIR + image.getPath());
             try {
-                FileUtils.deleteFile(filePath, image.getName());
+                FileUtils.deleteFile(filePath);
             } catch (IOException e) {
                 throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error");
             }
@@ -156,4 +160,6 @@ public class ProductServiceImp implements ProductService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    public static final String RESOURCE_NAME = "Product";
 }
