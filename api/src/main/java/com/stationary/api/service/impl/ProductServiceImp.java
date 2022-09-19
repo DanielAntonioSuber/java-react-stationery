@@ -40,6 +40,7 @@ public class ProductServiceImp implements ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", productDto.getSupplierId() + ""));
         Product product = mapToEntity(productDto);
         product.setSupplier(supplier);
+
         Product newProduct = productRepository.save(product);
 
         AtomicInteger count = new AtomicInteger();

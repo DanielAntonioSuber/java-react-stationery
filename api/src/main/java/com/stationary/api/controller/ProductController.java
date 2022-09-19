@@ -3,6 +3,7 @@ package com.stationary.api.controller;
 import com.stationary.api.dto.ListResponse;
 import com.stationary.api.dto.ProductDto;
 import com.stationary.api.service.ProductService;
+import com.stationary.api.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,10 +24,10 @@ public class ProductController {
 
     @GetMapping()
     public ResponseEntity<ListResponse<ProductDto>> getProducts(
-            @RequestParam(name = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
-            @RequestParam(name = "sizePage", defaultValue = "10",required = false) Integer sizePage,
-            @RequestParam(name = "sortBy", defaultValue = "code",required = false) String sortBy,
-            @RequestParam(name = "sortDir", defaultValue = "ASC", required = false) String sortDir
+            @RequestParam(name = "pageNumber", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+            @RequestParam(name = "sizePage", defaultValue = AppConstants.DEFAULT_SIZE_PAGE) Integer sizePage,
+            @RequestParam(name = "sortBy", defaultValue = "code") String sortBy,
+            @RequestParam(name = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIR) String sortDir
     ) {
         return new ResponseEntity<>(productService.getProducts(pageNumber, sizePage, sortBy, sortDir), HttpStatus.OK);
     }

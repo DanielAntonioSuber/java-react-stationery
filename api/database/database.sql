@@ -19,15 +19,20 @@ CREATE TABLE `employees` (
 
     UNIQUE INDEX `employee_rfc_key`(`rfc`),
     UNIQUE INDEX `employee_email_key`(`email`),
+    UNIQUE INDEX `employee_full_name_key`(`name`, `surname`),
     PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `clients` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
+    `surname` VARCHAR(191) NOT NULL,
     `direction` VARCHAR(255) NOT NULL,
     `phone_number` VARCHAR(255) NOT NULL,
+    `email` VARCHAR(191),
 
+    UNIQUE INDEX `client_email_key`(`email`),
+    UNIQUE INDEX `client_full_name_key`(`name`, `surname`),
     PRIMARY KEY (`id`)
 );
 

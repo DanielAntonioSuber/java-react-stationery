@@ -8,8 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "clients")
-@Getter @Setter
+@Table(name = "clients", indexes = {
+        @Index(name = "client_full_name_key", columnList = "name, surname", unique = true),
+        @Index(name = "client_email_key", columnList = "email", unique = true)
+})
+@Getter
+@Setter
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +21,12 @@ public class Client {
 
     private String name;
 
+    private String surname;
+
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    private String email;
 
     private String direction;
 
