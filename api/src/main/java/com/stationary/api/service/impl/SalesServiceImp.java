@@ -33,7 +33,7 @@ public class SalesServiceImp implements SalesService {
     public SaleDto makeASale(SaleDto saleDto) {
         Sale sale = mapToEntity(saleDto);
         Client client = clientRepository.findById(saleDto.getClientId())
-                .orElseThrow(() -> new ResourceNotFoundException("Client", "Id", saleDto.getClientId() + ""));
+                .orElse(null);
         Employee employee = employeeRepository.findById(saleDto.getEmployeeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Employee", "Id", saleDto.getEmployeeId() + ""));
         Product product = productRepository.findById(saleDto.getProductCode())

@@ -20,7 +20,6 @@ public class SaleDto {
     @NotNull
     private Float total;
 
-    @NotNull
     private Integer clientId;
 
     @NotNull

@@ -9,12 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/sales")
 public class SalesController {
 
     @PostMapping
-    public ResponseEntity<SaleDto> makeASale(SaleDto saleDto) {
+    public ResponseEntity<SaleDto> makeASale(@Valid @RequestBody SaleDto saleDto) {
         return new ResponseEntity<>(salesService.makeASale(saleDto), HttpStatus.CREATED);
     }
 
