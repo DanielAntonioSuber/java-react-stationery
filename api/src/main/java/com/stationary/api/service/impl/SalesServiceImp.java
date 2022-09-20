@@ -16,12 +16,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class SaleServiceImp implements SalesService {
+@Service
+public class SalesServiceImp implements SalesService {
 
     @Transactional(
             rollbackFor = {AppException.class, SQLException.class},

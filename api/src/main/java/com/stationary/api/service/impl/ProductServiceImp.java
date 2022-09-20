@@ -21,11 +21,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -34,6 +36,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class ProductServiceImp implements ProductService {
+    @Transactional(
+            rollbackFor = {IOException.class, AppException.class, SQLException.class},
+            noRollbackFor = {ResourceNotFoundException.class})
     @Override
     public ProductDto addProductToInventory(ProductDto productDto, MultipartFile[] multipartFiles) {
         Supplier supplier = supplierRepository.findById(productDto.getSupplierId())
