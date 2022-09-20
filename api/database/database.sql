@@ -52,7 +52,7 @@ CREATE TABLE `products` (
     `article_name` VARCHAR(255) NOT NULL,
     `wholesale_price` FLOAT NOT NULL,
     `retail_price` FLOAT NOT NULL,
-    `amount` INTEGER UNSIGNED NOT NULL,
+    `amount` INTEGER NOT NULL,
     `brand` VARCHAR(255) NOT NULL,
     `supplier_id` INTEGER NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -69,7 +69,7 @@ CREATE TABLE `sales` (
     `employee_id` INTEGER NOT NULL,
     `client_id` INTEGER,
     `price` FLOAT  NOT NULL,
-    `amount` INTEGER UNSIGNED NOT NULL,
+    `amount` INTEGER NOT NULL,
     `total` FLOAT  NOT NULL,
     `sale_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

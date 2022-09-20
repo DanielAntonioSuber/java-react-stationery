@@ -1,9 +1,11 @@
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 function App() {
   return (
     <BrowserRouter>
-      <Route path='/' element={<h1>Hola</h1>} />
+      <Routes>
+        <Route path='/' element={<h1>Hola</h1>} />
+      </Routes>
     </BrowserRouter>
   )
 }
