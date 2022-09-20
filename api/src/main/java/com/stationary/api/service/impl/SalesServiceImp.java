@@ -36,8 +36,8 @@ public class SalesServiceImp implements SalesService {
                 .orElseThrow(() -> new ResourceNotFoundException("Client", "Id", saleDto.getClientId() + ""));
         Employee employee = employeeRepository.findById(saleDto.getEmployeeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Employee", "Id", saleDto.getEmployeeId() + ""));
-        Product product = productRepository.findById(saleDto.getProductId())
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "Id", saleDto.getClientId() + ""));
+        Product product = productRepository.findById(saleDto.getProductCode())
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "Code", saleDto.getClientId() + ""));
 
         sale.setClient(client);
         sale.setEmployee(employee);
@@ -88,14 +88,22 @@ public class SalesServiceImp implements SalesService {
 
     private Sale mapToEntity(SaleDto saleDto) {
         return modelMapper.typeMap(SaleDto.class, Sale.class)
-                .addMappings(mapper -> mapper.skip(Sale::setClient))
-                .addMappings(mapper -> mapper.skip(Sale::setEmployee))
-                .addMappings(mapper -> mapper.skip(Sale::setProduct))
+                .addMappings(mapper -> {
+                    mapper.skip(Sale::setClient);
+                    mapper.skip(Sale::setEmployee);
+                    mapper.skip(Sale::setEmployee);
+                })
                 .map(saleDto);
     }
 
     private SaleDto mapToDto(Sale sale) {
-        return modelMapper.map(sale, SaleDto.class);
+        return modelMapper.typeMap(Sale.class, SaleDto.class)
+                .addMappings(mapper -> {
+                    mapper.map(src -> src.getClient().getId(), SaleDto::setClientId);
+                    mapper.map(src -> src.getEmployee().getId(), SaleDto::setEmployeeId);
+                    mapper.map(src -> src.getProduct().getCode(),SaleDto::setProductCode);
+                })
+                .map(sale);
     }
 
     @Autowired

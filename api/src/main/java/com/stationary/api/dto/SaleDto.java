@@ -1,6 +1,5 @@
 package com.stationary.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,22 +21,13 @@ public class SaleDto {
     private Float total;
 
     @NotNull
-    @JsonIgnore
     private Integer clientId;
 
     @NotNull
-    @JsonIgnore
-    private Integer productId;
+    private Integer productCode;
 
     @NotNull
-    @JsonIgnore
     private Integer employeeId;
 
     private Calendar saleDate;
-
-    private String client;
-
-    private String product;
-
-    private String employee;
 }
