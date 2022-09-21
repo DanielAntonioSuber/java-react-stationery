@@ -1,11 +1,12 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { ReactElement } from 'react'
+import { BrowserRouter } from 'react-router-dom'
 
-function App() {
+import { MainRoutes } from './routes'
+
+function App (): ReactElement {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<h1>Hola</h1>} />
-      </Routes>
+      <MainRoutes />
     </BrowserRouter>
   )
 }
