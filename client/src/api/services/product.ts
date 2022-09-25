@@ -22,9 +22,10 @@ const getProducts = async (paginationParams: PaginationParams): Promise<AxiosRes
 }
 
 const updateProductRequest = async (code: number, data: CreateProductData): Promise<AxiosResponse<ProductResponse, any>> =>
-  await api.put('/products', data)
+  await api.put(`/products/${code}`, data)
 
-const deleteProductRequest = async (code: number): Promise<AxiosResponse<string, any>> => await api.delete('/products')
+const deleteProductRequest = async (code: number): Promise<AxiosResponse<string, any>> =>
+  await api.delete(`/products/${code}`)
 
 export {
   createProductRequest,
