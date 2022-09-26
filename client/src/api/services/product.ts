@@ -11,14 +11,14 @@ const createProductRequest = async (data: CreateProductData): Promise<AxiosRespo
 const getProductRequest = async (code: number): Promise<AxiosResponse<ProductResponse, any>> =>
   await api.get(`/products/${code}`)
 
-const getProducts = async (paginationParams: PaginationParams): Promise<AxiosResponse<ListResponse<ProductResponse>, any>> => {
+const getProductsRequest = async (paginationParams: PaginationParams): Promise<AxiosResponse<ListResponse<ProductResponse>, any>> => {
   const params = new URLSearchParams()
 
   Object.entries(paginationParams).forEach(([key, value]) => {
     params.set(key, value)
   })
 
-  return await api.get('/products')
+  return await api.get(`/products/${params.toString()}`)
 }
 
 const updateProductRequest = async (code: number, data: CreateProductData): Promise<AxiosResponse<ProductResponse, any>> =>
@@ -30,7 +30,7 @@ const deleteProductRequest = async (code: number): Promise<AxiosResponse<string,
 export {
   createProductRequest,
   getProductRequest,
-  getProducts,
+  getProductsRequest,
   updateProductRequest,
   deleteProductRequest
 }

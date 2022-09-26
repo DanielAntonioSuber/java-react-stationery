@@ -27,6 +27,8 @@ export interface RegisterResponse extends EmployeeData {
   updatedAt: Date
 }
 
+// Product
+
 export interface ProductData {
   articleName: string
   wholesalePrice: string
@@ -47,6 +49,19 @@ export interface ProductResponse extends ProductData {
   updatedAt: Date
   images: Array<{ url: string, name: string }>
 }
+
+// Supplier
+
+export interface SupplierData {
+  supplierName: string
+  rfc: string
+}
+
+export interface SupplierResponse extends SupplierData {
+  id: number
+}
+
+// Other
 
 export interface ListResponse<T> {
   content: T
