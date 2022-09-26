@@ -17,8 +17,9 @@ const getProductsRequest = async (paginationParams: PaginationParams): Promise<A
   Object.entries(paginationParams).forEach(([key, value]) => {
     params.set(key, value)
   })
+  const isEmpty = Array.from(params.values()).length === 0
 
-  return await api.get(`/products/${params.toString()}`)
+  return await api.get(`/products/${isEmpty ? '' : '?'}${params.toString()}`)
 }
 
 const updateProductRequest = async (code: number, data: CreateProductData): Promise<AxiosResponse<ProductResponse, any>> =>

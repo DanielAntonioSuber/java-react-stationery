@@ -14,8 +14,9 @@ const getSuppliersRequest = async (paginationParams: PaginationParams): Promise<
   Object.entries(paginationParams).forEach(([key, value]) => {
     params.set(key, value)
   })
+  const isEmpty = Array.from(params.values()).length === 0
 
-  return await api.get(`/suppliers/${params.toString()}`)
+  return await api.get(`/suppliers/${isEmpty ? '' : '?'}$${params.toString()}`)
 }
 
 const updateSupplierRequest = async (id: number, data: SupplierData): Promise<AxiosResponse<SupplierData, any>> =>
