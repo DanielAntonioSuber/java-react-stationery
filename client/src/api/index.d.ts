@@ -61,6 +61,20 @@ export interface SupplierResponse extends SupplierData {
   id: number
 }
 
+// client
+
+export interface ClientData {
+  name: string
+  surname: string
+  phoneNumber: string
+  direction: string
+  email: string
+}
+
+export interface ClientResponse extends ClientData {
+  id: number
+}
+
 // Other
 
 export interface ListResponse<T> {
