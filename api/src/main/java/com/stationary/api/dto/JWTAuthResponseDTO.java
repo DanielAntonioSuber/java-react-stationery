@@ -5,8 +5,9 @@ import lombok.Setter;
 
 public class JWTAuthResponseDTO {
 
-    public JWTAuthResponseDTO(String accessToken) {
+    public JWTAuthResponseDTO(String accessToken, String role) {
         this.accessToken = accessToken;
+        this.role = role;
     }
 
     @Getter @Setter
@@ -14,4 +15,7 @@ public class JWTAuthResponseDTO {
 
     @Getter @Setter
     private String kindToken = "Bearer";
+
+    @Getter @Setter
+    private String role;
 }

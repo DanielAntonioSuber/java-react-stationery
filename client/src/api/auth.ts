@@ -2,12 +2,20 @@ import { AxiosResponse } from 'axios'
 
 import api from './api'
 
-import { EmployeeData, LoginRequestData, LoginRespone, RegisterResponse } from '.'
+import { EmployeeData, LoginData, LoginRespone, RegisterResponse } from '.'
 
-const loginRequest = async (data: LoginRequestData): Promise<AxiosResponse<LoginRespone>> =>
+const loginRequest = async (data: LoginData): Promise<AxiosResponse<LoginRespone>> =>
   await api.post('/auth/login', data)
 
 const registerRequest = async (data: EmployeeData): Promise<AxiosResponse<RegisterResponse>> =>
   await api.post('/auth/register', data)
 
-export { loginRequest, registerRequest }
+const setTokenInHeaders = (kind: string, token: string): void => {
+  api.defaults.headers.common.Authorization = `${kind} ${token}`
+}
+
+const removeTokenInHeader = (): void => {
+  api.defaults.headers.common.Authorization = ''
+}
+
+export { loginRequest, registerRequest, setTokenInHeaders, removeTokenInHeader }

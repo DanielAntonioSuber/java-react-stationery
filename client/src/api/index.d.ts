@@ -14,9 +14,10 @@ export interface EmployeeData {
 export interface LoginRespone {
   accessToken: string
   kindToken: string
+  role: string
 }
 
-export interface LoginRequestData {
+export interface LoginData {
   emailOrRfc: string
   password: string
 }
