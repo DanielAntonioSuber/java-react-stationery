@@ -1,19 +1,37 @@
-import { FC, lazy } from 'react'
+import { lazy, ReactElement } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 import { Loadable } from '@/components/ui'
 import { AppLayout } from '@/components/layout'
+import useAuth from '@/hooks/useAuth'
+
+import ProtectedRoute from './ProtectedRoute'
 
 const Login = Loadable(lazy(async () => await import('@/views/Login')))
 const Inventory = Loadable(lazy(async () => await import('@/views/Inventory')))
+const Home = Loadable(lazy(async () => await import('@/views/Home')))
 
-const MainRoutes: FC = () => (
-  <Routes>
-    <Route path='/' element={<AppLayout/>} >
-      <Route path='login' element={<Login/>} />
-      <Route path='inventory' element={<Inventory />} />
-    </Route>
-  </Routes>
-)
+function MainRoutes (): ReactElement {
+  const [authState] = useAuth()
+
+  return (
+    <Routes>
+      <Route path='/' element={<AppLayout />} >
+        <Route path='login' element={<Login />} />
+
+        <Route index element={
+          <ProtectedRoute isAllowed={authState.isLogged} >
+            <Home />
+          </ProtectedRoute>
+        } />
+        <Route path='inventory' element={
+          <ProtectedRoute isAllowed={authState.isLogged}>
+            <Inventory />
+          </ProtectedRoute>
+        } />
+      </Route>
+    </Routes>
+  )
+}
 
 export default MainRoutes
