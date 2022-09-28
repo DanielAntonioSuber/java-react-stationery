@@ -58,6 +58,4 @@ public class WebSecurityConfig {
 
     @Autowired
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
-
-
 }

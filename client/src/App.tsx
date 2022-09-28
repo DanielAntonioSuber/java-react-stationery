@@ -4,13 +4,16 @@ import { BrowserRouter } from 'react-router-dom'
 import { CssBaseline } from '@mui/material'
 
 import { MainRoutes } from './routes'
+import { AuthProvider } from './contexts/AuthContext'
 
 function App (): ReactElement {
   return (
-    <BrowserRouter>
-      <CssBaseline />
-      <MainRoutes />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <CssBaseline />
+        <MainRoutes />
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
 
