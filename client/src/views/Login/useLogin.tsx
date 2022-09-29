@@ -1,9 +1,9 @@
 import { ChangeEventHandler, FormEventHandler, MouseEventHandler, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import useAuth from '@/hooks/useAuth'
+import { useAuth } from '@/hooks'
 
-function useLogin (): {
+interface UseLoginReturn {
   handleInputChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
   handleSubmit: FormEventHandler<HTMLFormElement>
   toggleShowPassword: MouseEventHandler
@@ -12,7 +12,9 @@ function useLogin (): {
     password: string
     emailOrRfc: string
   }
-} {
+}
+
+function useLogin (): UseLoginReturn {
   const [values, setValues] = useState({ password: '', emailOrRfc: '' })
   const [showPassword, setShowPassword] = useState(false)
   const [authContext, actions] = useAuth()
@@ -42,3 +44,5 @@ function useLogin (): {
 }
 
 export default useLogin
+
+export type { UseLoginReturn }

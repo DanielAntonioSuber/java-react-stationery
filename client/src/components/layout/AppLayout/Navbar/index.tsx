@@ -1,6 +1,7 @@
 import { ReactElement } from 'react'
 
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
+import { AddCircle } from '@mui/icons-material'
 
 function Navbar (): ReactElement {
   return (
@@ -14,6 +15,7 @@ function Navbar (): ReactElement {
           <Button color="inherit">Clients</Button>
           <Button color="inherit">Sell</Button>
           <Button color="inherit">Supplier</Button>
+          <Button color="inherit" startIcon={<AddCircle />}>Register</Button>
         </Toolbar>
       </AppBar>
     </Box>

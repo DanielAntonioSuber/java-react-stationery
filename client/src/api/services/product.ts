@@ -1,5 +1,4 @@
 import { AxiosResponse } from 'axios'
-import { URLSearchParams } from 'url'
 
 import api from '../api'
 

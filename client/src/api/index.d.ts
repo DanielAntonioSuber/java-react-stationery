@@ -46,8 +46,8 @@ export interface CreateProductData {
 
 export interface ProductResponse extends ProductData {
   code: number
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
   images: Array<{ url: string, name: string }>
 }
 
@@ -79,7 +79,7 @@ export interface ClientResponse extends ClientData {
 // Other
 
 export interface ListResponse<T> {
-  content: T
+  content: T[]
   sizePage: number
   totalPages: number
   totalElements: number

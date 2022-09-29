@@ -3,7 +3,8 @@ import { Route, Routes } from 'react-router-dom'
 
 import { Loadable } from '@/components/ui'
 import { AppLayout } from '@/components/layout'
-import useAuth from '@/hooks/useAuth'
+
+import { useAuth } from '@/hooks'
 
 import ProtectedRoute from './ProtectedRoute'
 

@@ -11,11 +11,11 @@ const registerRequest = async (data: EmployeeData): Promise<AxiosResponse<Regist
   await api.post('/auth/register', data)
 
 const setTokenInHeaders = (kind: string, token: string): void => {
-  api.defaults.headers.common.Authorization = `${kind} ${token}`
+  api.defaults.headers.post.Authorization = `${kind} ${token}`
 }
 
 const removeTokenInHeader = (): void => {
-  api.defaults.headers.common.Authorization = ''
+  api.defaults.headers.post.Authorization = ''
 }
 
 export { loginRequest, registerRequest, setTokenInHeaders, removeTokenInHeader }
