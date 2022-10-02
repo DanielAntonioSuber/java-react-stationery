@@ -31,7 +31,7 @@ public class WebSecurityConfig {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                 .antMatchers("/images/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/**").authenticated();
