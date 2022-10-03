@@ -26,15 +26,20 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        String antPattern = "/api/**";
         http.csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/products/**").permitAll()
-                .antMatchers("/images/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/products/**", "/images/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/**").authenticated();
+                .antMatchers(HttpMethod.DELETE,antPattern).authenticated()
+                .antMatchers(HttpMethod.PUT,antPattern).authenticated()
+                .antMatchers(HttpMethod.POST,antPattern).authenticated();
+
+
+
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

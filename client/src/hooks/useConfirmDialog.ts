@@ -46,3 +46,5 @@ function useConfirmDialog (): UseConfirmDialogReturn {
 }
 
 export default useConfirmDialog
+
+export type { UseConfirmDialogReturn }

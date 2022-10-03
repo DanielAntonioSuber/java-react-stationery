@@ -1,43 +1,58 @@
 import { useEffect, useState } from 'react'
 
-import { ProductResponse } from '@/api'
+import { PaginationParams, ProductResponse } from '@/api'
 import { PaginationOptionsReturn } from '@/hooks/usePaginationOptions'
 
-import { getProductsRequest } from '@/api/services/product'
-import { usePaginationOptions } from '@/hooks'
+import { deleteProductRequest, getProductsRequest } from '@/api/services/product'
+import { useConfirmDialog, usePaginationOptions } from '@/hooks'
+import { UseConfirmDialogReturn } from '@/hooks/useConfirmDialog'
 
-interface UseProductsReturn extends PaginationOptionsReturn {
+type UseProductsReturn = Omit<PaginationOptionsReturn, 'setTotalElements'> & {
   products: ProductResponse[]
-}
+  handleDeleteProduct: (code: number) => void
+} & Omit<UseConfirmDialogReturn, 'confirm'>
 
 function useProducts (): UseProductsReturn {
-  const { handleChangePage, handleChangeRowsPerPage, paginationOptions, setTotalElements } = usePaginationOptions()
   const [products, setProducts] = useState<ProductResponse[]>([])
+  const { confirm, handleClose, handleCancel, handleConfirm, open } = useConfirmDialog()
+  const { handleChangePage, handleChangeRowsPerPage, paginationOptions, setTotalElements } = usePaginationOptions()
 
-  useEffect(() => {
-    getProductsRequest({})
+  const fetchProducts: (paginationParams?: PaginationParams) => void = (paginationParams = {}) => {
+    getProductsRequest(paginationParams)
       .then(res => {
         setProducts(res.data.content)
         setTotalElements(res.data.totalElements)
       })
       .catch(err => console.log(err))
+  }
+
+  useEffect(() => {
+    fetchProducts({ pageNumber: paginationOptions.page, sizePage: paginationOptions.rowsPerPage })
   }, [])
 
   useEffect(() => {
-    getProductsRequest({ pageNumber: paginationOptions.page, sizePage: paginationOptions.rowsPerPage })
-      .then(res => {
-        setProducts(res.data.content)
-        setTotalElements(res.data.totalElements)
-      })
-      .catch(err => console.log(err))
+    fetchProducts({ pageNumber: paginationOptions.page, sizePage: paginationOptions.rowsPerPage })
   }, [paginationOptions.page, paginationOptions.rowsPerPage])
+
+  const handleDeleteProduct: (code: number) => void = (code) => {
+    confirm()
+      .then(async () => await deleteProductRequest(code))
+      .then(() => { fetchProducts({ pageNumber: paginationOptions.page, sizePage: paginationOptions.rowsPerPage }) })
+      .catch(() => {
+
+      })
+  }
 
   return {
     products,
     handleChangePage,
     handleChangeRowsPerPage,
     paginationOptions,
-    setTotalElements
+    handleCancel,
+    handleClose,
+    handleConfirm,
+    open,
+    handleDeleteProduct
   }
 }
 
