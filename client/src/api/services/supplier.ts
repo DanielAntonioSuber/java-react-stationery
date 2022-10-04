@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { ListResponse, PaginationParams, ProductResponse, SupplierData, SupplierResponse } from '..'
+import { ListResponse, PaginationParams, SupplierData, SupplierResponse } from '..'
 import api from '../api'
 
 const createSupplierRequest = async (data: SupplierData): Promise<AxiosResponse<SupplierResponse, any>> =>
@@ -8,7 +8,7 @@ const createSupplierRequest = async (data: SupplierData): Promise<AxiosResponse<
 const getSupplierRequest = async (id: number): Promise<AxiosResponse<SupplierData, any>> =>
   await api.get(`/suppliers/${id}`)
 
-const getSuppliersRequest = async (paginationParams: PaginationParams): Promise<AxiosResponse<ListResponse<ProductResponse>, any>> => {
+const getSuppliersRequest = async (paginationParams: PaginationParams): Promise<AxiosResponse<ListResponse<SupplierResponse>, any>> => {
   const params = new URLSearchParams()
 
   Object.entries(paginationParams).forEach(([key, value]) => {
@@ -16,7 +16,7 @@ const getSuppliersRequest = async (paginationParams: PaginationParams): Promise<
   })
   const isEmpty = Array.from(params.values()).length === 0
 
-  return await api.get(`/suppliers/${isEmpty ? '' : '?'}$${params.toString()}`)
+  return await api.get(`/suppliers/${isEmpty ? '' : '?'}${params.toString()}`)
 }
 
 const updateSupplierRequest = async (id: number, data: SupplierData): Promise<AxiosResponse<SupplierData, any>> =>

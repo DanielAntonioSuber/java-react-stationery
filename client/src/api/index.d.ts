@@ -32,8 +32,8 @@ export interface RegisterResponse extends EmployeeData {
 
 export interface ProductData {
   articleName: string
-  wholesalePrice: string
-  retailPrice: string
+  wholesalePrice: number
+  retailPrice: number
   amount: number
   brand: string
   supplierId: number
@@ -41,7 +41,7 @@ export interface ProductData {
 
 export interface CreateProductData {
   product: ProductData
-  imagesFiles: FileList
+  imageFiles: FileList
 }
 
 export interface ProductResponse extends ProductData {

@@ -12,6 +12,7 @@ const Login = Loadable(lazy(async () => await import('@/views/Login')))
 const Inventory = Loadable(lazy(async () => await import('@/views/Inventory')))
 const Home = Loadable(lazy(async () => await import('@/views/Home')))
 const Register = Loadable(lazy(async () => await import('@/views/Register')))
+const ProductForm = Loadable(lazy(async () => await import('@/views/ProductForm')))
 
 function MainRoutes (): ReactElement {
   const [authState] = useAuth()
@@ -34,6 +35,16 @@ function MainRoutes (): ReactElement {
           <Route path='register' element={
             <ProtectedRoute isAllowed={authState.isLogged}>
               <Register />
+            </ProtectedRoute>
+          } />
+          <Route path='product/:id/edit' element={
+            <ProtectedRoute isAllowed={authState.isLogged}>
+              <ProductForm />
+            </ProtectedRoute>
+          } />
+          <Route path='product/add' element={
+            <ProtectedRoute isAllowed={authState.isLogged}>
+              <ProductForm />
             </ProtectedRoute>
           } />
         </Route>

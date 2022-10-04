@@ -1,13 +1,23 @@
 import { ReactElement } from 'react'
 
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, TableFooter, TablePagination, Container, Typography, Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
-
+import { Link } from 'react-router-dom'
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, TableFooter, TablePagination, Container, Typography, Button, Dialog, DialogActions, DialogTitle, Stack } from '@mui/material'
 import { TablePaginationActions } from '@/components/ui'
 
 import useProducts from './useProducts'
 
 function Inventory (): ReactElement {
-  const { handleChangePage, handleChangeRowsPerPage, paginationOptions, products, handleCancel, handleClose, handleConfirm, handleDeleteProduct, open } = useProducts()
+  const {
+    handleChangePage,
+    handleChangeRowsPerPage,
+    paginationOptions,
+    products,
+    handleCancel,
+    handleClose,
+    handleConfirm,
+    handleDeleteProduct,
+    open
+  } = useProducts()
 
   return (
     <>
@@ -24,16 +34,26 @@ function Inventory (): ReactElement {
           <Button color="error" onClick={handleConfirm}>
             Delete
           </Button>
-          <Button onClick={handleCancel}>
-            Close
-          </Button>
+          <Button onClick={handleCancel}>Close</Button>
         </DialogActions>
       </Dialog>
 
-      <Container maxWidth='xl'>
-        <Typography variant="h2" component='h1'>
-          Inventory
-        </Typography>
+      <Container maxWidth="xl">
+        <Stack direction="row" justifyContent="space-between" margin={2}>
+          <Typography variant="h2" component="h1">
+            Inventory
+          </Typography>
+          <Stack justifyContent="center">
+            <Button
+              component={Link}
+              to="/product/add"
+              color="secondary"
+              variant="outlined"
+            >
+              Add product
+            </Button>
+          </Stack>
+        </Stack>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} stickyHeader aria-label="sticky table">
             <TableHead>
@@ -51,8 +71,8 @@ function Inventory (): ReactElement {
               </TableRow>
             </TableHead>
             <TableBody>
-              {products.map(product => (
-                <TableRow key={`product-${product.code}`} >
+              {products.map((product) => (
+                <TableRow key={`product-${product.code}`}>
                   <TableCell>{product.code}</TableCell>
                   <TableCell align="center">{product.articleName}</TableCell>
                   <TableCell align="center">{product.retailPrice}</TableCell>
@@ -60,14 +80,22 @@ function Inventory (): ReactElement {
                   <TableCell align="center">{product.amount}</TableCell>
                   <TableCell align="center">{product.brand}</TableCell>
                   <TableCell align="center">{product.supplierId}</TableCell>
-                  <TableCell align="center">{new Date(product.createdAt).toLocaleDateString()}</TableCell>
-                  <TableCell align="center">{new Date(product.updatedAt).toLocaleDateString()}</TableCell>
                   <TableCell align="center">
-                    <Button>Fotos</Button>
-                    <Button>Editar</Button>
-                    <Button onClick={() => {
-                      handleDeleteProduct(product.code)
-                    }}>Eliminar</Button>
+                    {new Date(product.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell align="center">
+                    {new Date(product.updatedAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button>Images</Button>
+                    <Button>Edit</Button>
+                    <Button
+                      onClick={() => {
+                        handleDeleteProduct(product.code)
+                      }}
+                    >
+                      Delete
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
