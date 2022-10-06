@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
 
 import api from '../api'
-import { CreateProductData, ListResponse, PaginationParams, ProductResponse } from '..'
+import { CreateProductData, ListResponse, PaginationParams, ProductData, ProductResponse } from '..'
 
 const createProductRequest = async (data: CreateProductData): Promise<AxiosResponse<ProductResponse, any>> => {
   const formData = new FormData()
@@ -30,7 +30,7 @@ const getProductsRequest = async (paginationParams: PaginationParams): Promise<A
   return await api.get(`/products/${isEmpty ? '' : '?'}${params.toString()}`)
 }
 
-const updateProductRequest = async (code: number, data: CreateProductData): Promise<AxiosResponse<ProductResponse, any>> =>
+const updateProductRequest = async (code: number, data: ProductData): Promise<AxiosResponse<ProductResponse, any>> =>
   await api.put(`/products/${code}`, data)
 
 const deleteProductRequest = async (code: number): Promise<AxiosResponse<string, any>> =>

@@ -87,11 +87,17 @@ function ProductForm (): ReactElement {
               multiple
               onChange={handleImageInputchange}
             />
-            <Button className="btn-choose" variant="outlined" component="span">
-              {images === null
-                ? 'Select images'
-                : `${typeof images?.length === 'number' ? images.length : 0} selected`}
-            </Button>
+            {isAdd && (
+              <Button
+                className="btn-choose"
+                variant="outlined"
+                component="span"
+              >
+                {images === null
+                  ? 'Select images'
+                  : `${typeof images?.length === 'number' ? images.length : 0} selected`}
+              </Button>
+            )}
           </label>
         </Box>
         <Button variant="contained" size="large" type="submit">

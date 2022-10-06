@@ -1,7 +1,6 @@
 import { ReactElement } from 'react'
 
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
-import { AddCircle } from '@mui/icons-material'
 import { Link } from 'react-router-dom'
 
 function Navbar (): ReactElement {
@@ -17,13 +16,7 @@ function Navbar (): ReactElement {
           >
             Stationery
           </Typography>
-          <Button color="inherit">Inventory</Button>
-          <Button color="inherit">Clients</Button>
           <Button color="inherit">Sell</Button>
-          <Button color="inherit">Supplier</Button>
-          <Button color="inherit" startIcon={<AddCircle />}>
-            Register
-          </Button>
         </Toolbar>
       </AppBar>
     </Box>

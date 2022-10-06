@@ -12,42 +12,68 @@ const Login = Loadable(lazy(async () => await import('@/views/Login')))
 const Inventory = Loadable(lazy(async () => await import('@/views/Inventory')))
 const Home = Loadable(lazy(async () => await import('@/views/Home')))
 const Register = Loadable(lazy(async () => await import('@/views/Register')))
-const ProductForm = Loadable(lazy(async () => await import('@/views/ProductForm')))
+const ProductForm = Loadable(
+  lazy(async () => await import('@/views/ProductForm'))
+)
+const Product = Loadable(lazy(async () => await import('@/views/Product')))
 
 function MainRoutes (): ReactElement {
   const [authState] = useAuth()
 
   return (
     <Routes>
-      <Route path='/' element={<AppLayout />} >
-        <Route path='login' element={<Login />} />
+      <Route path="/" element={<AppLayout />}>
+        <Route path="login" element={<Login />} />
 
-          <Route index element={
-            <ProtectedRoute isAllowed={authState.isLogged} >
+        <Route
+          index
+          element={
+            <ProtectedRoute isAllowed={authState.isLogged}>
               <Home />
             </ProtectedRoute>
-          } />
-          <Route path='inventory' element={
+          }
+        />
+        <Route
+          path="inventory"
+          element={
             <ProtectedRoute isAllowed={authState.isLogged}>
               <Inventory />
             </ProtectedRoute>
-          } />
-          <Route path='register' element={
+          }
+        />
+        <Route
+          path="register"
+          element={
             <ProtectedRoute isAllowed={authState.isLogged}>
               <Register />
             </ProtectedRoute>
-          } />
-          <Route path='product/:id/edit' element={
+          }
+        />
+        <Route
+          path="products/:productCode/edit"
+          element={
             <ProtectedRoute isAllowed={authState.isLogged}>
               <ProductForm />
             </ProtectedRoute>
-          } />
-          <Route path='product/add' element={
+          }
+        />
+        <Route
+          path="products/add"
+          element={
             <ProtectedRoute isAllowed={authState.isLogged}>
               <ProductForm />
             </ProtectedRoute>
-          } />
-        </Route>
+          }
+        />
+        <Route
+          path="products/:productCode"
+          element={
+            <ProtectedRoute isAllowed={authState.isLogged}>
+              <Product />
+            </ProtectedRoute>
+          }
+        />
+      </Route>
     </Routes>
   )
 }

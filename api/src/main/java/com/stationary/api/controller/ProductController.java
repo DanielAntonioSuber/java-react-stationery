@@ -37,7 +37,7 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProduct(code), HttpStatus.OK);
     }
 
-    @PutMapping(name = "/{code}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping("/{code}")
     public ResponseEntity<ProductDto> updateProductByCode(@PathVariable("code") Integer code, @Valid @RequestBody ProductDto productDto) {
         ProductDto updatedProduct = productService.updateProduct(code, productDto);
 

@@ -1,6 +1,7 @@
 import { ReactElement } from 'react'
 
 import { Link } from 'react-router-dom'
+
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, TableFooter, TablePagination, Container, Typography, Button, Dialog, DialogActions, DialogTitle, Stack } from '@mui/material'
 import { TablePaginationActions } from '@/components/ui'
 
@@ -21,23 +22,6 @@ function Inventory (): ReactElement {
 
   return (
     <>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          Are you sure to delete this product?
-        </DialogTitle>
-        <DialogActions>
-          <Button color="error" onClick={handleConfirm}>
-            Delete
-          </Button>
-          <Button onClick={handleCancel}>Close</Button>
-        </DialogActions>
-      </Dialog>
-
       <Container maxWidth="xl">
         <Stack direction="row" justifyContent="space-between" margin={2}>
           <Typography variant="h2" component="h1">
@@ -46,7 +30,7 @@ function Inventory (): ReactElement {
           <Stack justifyContent="center">
             <Button
               component={Link}
-              to="/product/add"
+              to="/products/add"
               color="secondary"
               variant="outlined"
             >
@@ -87,9 +71,18 @@ function Inventory (): ReactElement {
                     {new Date(product.updatedAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell align="center">
-                    <Button>Images</Button>
-                    <Button>Edit</Button>
+                    <Button component={Link} to={`/products/${product.code}`}>
+                      Show
+                    </Button>
                     <Button
+                      component={Link}
+                      color="warning"
+                      to={`/products/${product.code}/edit`}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      color="error"
                       onClick={() => {
                         handleDeleteProduct(product.code)
                       }}
@@ -123,6 +116,23 @@ function Inventory (): ReactElement {
           </Table>
         </TableContainer>
       </Container>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Are you sure to delete this product?
+        </DialogTitle>
+        <DialogActions>
+          <Button color="error" onClick={handleConfirm}>
+            Delete
+          </Button>
+          <Button onClick={handleCancel}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }

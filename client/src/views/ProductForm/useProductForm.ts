@@ -2,10 +2,12 @@ import { useState, ChangeEventHandler, ReactNode, FormEventHandler, useEffect } 
 
 import { SelectChangeEvent } from '@mui/material'
 
-import { useLocation, useNavigate } from 'react-router-dom'
-import { createProductRequest } from '@/api/services/product'
-import { ProductData, SupplierResponse } from '@/api'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+
+import { createProductRequest, getProductRequest, updateProductRequest } from '@/api/services/product'
 import { getSuppliersRequest } from '@/api/services/supplier'
+
+import { ProductData, SupplierResponse } from '@/api'
 
 interface Values {
   amount: number | ''
@@ -19,7 +21,10 @@ interface Values {
 interface UseProductFormResponse {
   images: FileList | null
   handleInputChange: ChangeEventHandler<HTMLInputElement>
-  handleSelectChange: (event: SelectChangeEvent<number>, child: ReactNode) => void
+  handleSelectChange: (
+    event: SelectChangeEvent<number>,
+    child: ReactNode
+  ) => void
   handleImageInputchange: ChangeEventHandler<HTMLInputElement>
   isAdd: boolean
   values: Values
@@ -27,32 +32,64 @@ interface UseProductFormResponse {
   suppliers: SupplierResponse[]
 }
 
+const initialValues: Values = {
+  amount: '',
+  articleName: '',
+  brand: '',
+  retailPrice: '',
+  supplierId: '',
+  wholesalePrice: ''
+}
+
 function useProductForm (): UseProductFormResponse {
-  const [values, setValues] = useState<Values>({
-    amount: '',
-    articleName: '',
-    brand: '',
-    retailPrice: '',
-    supplierId: '',
-    wholesalePrice: ''
-  })
+  const [values, setValues] = useState<Values>(initialValues)
   const [images, setImages] = useState<FileList | null>(null)
   const [suppliers, setSuppliers] = useState<SupplierResponse[]>([])
   const { pathname } = useLocation()
+  const { productCode } = useParams()
   const navigate = useNavigate()
   const isAdd = pathname.includes('add')
 
   useEffect(() => {
     getSuppliersRequest({})
-      .then(res => setSuppliers(prev => [...res.data.content]))
+      .then((res) => setSuppliers([...res.data.content]))
       .catch(() => {})
+
+    if (!isAdd && productCode != null) {
+      getProductRequest(productCode as unknown as number)
+        .then(
+          ({
+            data: {
+              amount,
+              articleName,
+              brand,
+              retailPrice,
+              supplierId,
+              wholesalePrice
+            }
+          }) => {
+            setValues({
+              amount,
+              articleName,
+              brand,
+              retailPrice,
+              supplierId,
+              wholesalePrice
+            })
+          }
+        )
+        .catch(() => {})
+    }
   }, [])
 
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSelectChange: (event: SelectChangeEvent<number>, child: ReactNode) => void = (e) => {
+  const handleSelectChange: (
+    event: SelectChangeEvent<number>,
+    child: ReactNode
+  ) => void = (e) => {
     setValues((prev) => ({ ...prev, supplierId: e.target.value as number }))
   }
 
@@ -62,10 +99,25 @@ function useProductForm (): UseProductFormResponse {
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
-    if (images !== null) {
-      createProductRequest({ imageFiles: images, product: values as ProductData }).then(() => {
-        navigate('/inventory')
-      }).catch(() => {})
+
+    if (isAdd && images !== null) {
+      createProductRequest({
+        imageFiles: images,
+        product: values as ProductData
+      })
+        .then(() => {
+          navigate('/inventory')
+        })
+        .catch(() => {})
+    } else if (productCode != null) {
+      updateProductRequest(
+        productCode as unknown as number,
+        values as ProductData
+      )
+        .then(() => {
+          navigate('/inventory')
+        })
+        .catch(() => {})
     }
   }
 
