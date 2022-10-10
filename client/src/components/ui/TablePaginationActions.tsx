@@ -36,8 +36,8 @@ function TablePaginationActions (props: TablePaginationActionsProps): ReactEleme
   }
 
   return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+    <Box sx={{ flexShrink: 0, ml: 5 }}>
+      <Box sx={{ flexShrink: 0, ml: 3 }}>
         <IconButton
           onClick={handleFirstPageButtonClick}
           disabled={page === 0}

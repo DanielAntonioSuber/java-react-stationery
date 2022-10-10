@@ -1,16 +1,14 @@
 import { ReactElement } from 'react'
 
-import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
+import { Button, Container, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 
 import useProductForm from './useProductForm'
 
 function ProductForm (): ReactElement {
   const {
-    handleImageInputchange,
     handleInputChange,
     handleSelectChange,
     handleSubmit,
-    images,
     isAdd,
     values,
     suppliers
@@ -76,30 +74,6 @@ function ProductForm (): ReactElement {
             ))}
           </Select>
         </FormControl>
-        <Box margin="10px 0">
-          <label htmlFor="btn-upload">
-            <input
-              id="btn-upload"
-              name="btn-upload"
-              style={{ display: 'none' }}
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImageInputchange}
-            />
-            {isAdd && (
-              <Button
-                className="btn-choose"
-                variant="outlined"
-                component="span"
-              >
-                {images === null
-                  ? 'Select images'
-                  : `${typeof images?.length === 'number' ? images.length : 0} selected`}
-              </Button>
-            )}
-          </label>
-        </Box>
         <Button variant="contained" size="large" type="submit">
           Submit
         </Button>

@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -17,9 +16,9 @@ import javax.validation.Valid;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ProductDto> createProduct(@Valid @RequestPart("product") ProductDto productDto,@RequestPart("imageFiles") MultipartFile[] multipartFile) {
-        return new ResponseEntity<>(productService.addProductToInventory(productDto, multipartFile), HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productDto) {
+        return new ResponseEntity<>(productService.addProductToInventory(productDto), HttpStatus.CREATED);
     }
 
     @GetMapping()

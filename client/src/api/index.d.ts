@@ -39,16 +39,10 @@ export interface ProductData {
   supplierId: number
 }
 
-export interface CreateProductData {
-  product: ProductData
-  imageFiles: FileList
-}
-
 export interface ProductResponse extends ProductData {
   code: number
   createdAt: string
   updatedAt: string
-  images: Array<{ url: string, name: string }>
 }
 
 // Supplier

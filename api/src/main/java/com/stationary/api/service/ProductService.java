@@ -3,10 +3,9 @@ package com.stationary.api.service;
 
 import com.stationary.api.dto.ListResponse;
 import com.stationary.api.dto.ProductDto;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface ProductService {
-    ProductDto addProductToInventory(ProductDto productDto, MultipartFile[] multipartFiles);
+    ProductDto addProductToInventory(ProductDto productDto);
 
     ProductDto getProduct(Integer code);
 

@@ -3,36 +3,24 @@ package com.stationary.api.service.impl;
 import com.stationary.api.dto.ListResponse;
 import com.stationary.api.dto.ProductDto;
 import com.stationary.api.entitie.Product;
-import com.stationary.api.entitie.ProductImage;
 import com.stationary.api.entitie.Supplier;
 import com.stationary.api.exceptions.AppException;
 import com.stationary.api.exceptions.ResourceNotFoundException;
-import com.stationary.api.repository.ProductImageRepository;
 import com.stationary.api.repository.ProductRepository;
 import com.stationary.api.repository.SupplierRepository;
 import com.stationary.api.service.ProductService;
-import com.stationary.api.utils.AppConstants;
-import com.stationary.api.utils.FileUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class ProductServiceImp implements ProductService {
@@ -40,33 +28,13 @@ public class ProductServiceImp implements ProductService {
             rollbackFor = {IOException.class, AppException.class, SQLException.class},
             noRollbackFor = {ResourceNotFoundException.class})
     @Override
-    public ProductDto addProductToInventory(ProductDto productDto, MultipartFile[] multipartFiles) {
+    public ProductDto addProductToInventory(ProductDto productDto) {
         Supplier supplier = supplierRepository.findById(productDto.getSupplierId())
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", productDto.getSupplierId() + ""));
         Product product = mapToEntity(productDto);
         product.setSupplier(supplier);
 
         Product newProduct = productRepository.save(product);
-
-        AtomicInteger count = new AtomicInteger();
-        Arrays.stream(multipartFiles).forEach(multipartFile -> {
-            int number = count.getAndIncrement();
-
-            String fileName = product.getArticleName() + "-" + number + "-" + new GregorianCalendar().getTimeInMillis();
-            String fileExt = "." + Objects.requireNonNull(multipartFile.getContentType()).split("image/")[1];
-            Path uploadPath = Paths.get(AppConstants.RESOURCES_DIR + AppConstants.IMAGES_DIR);
-            Path relativePath = Paths.get(AppConstants.IMAGES_DIR);
-
-            try {
-                var productImage = new ProductImage(fileName, relativePath
-                        .resolve(fileName + fileExt).toString(), newProduct);
-                productImageRepository.save(productImage);
-                FileUtils.saveFile(uploadPath, fileName + fileExt, multipartFile);
-            } catch (IOException e) {
-                throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error to upload file");
-            }
-
-        });
 
         return mapToDto(newProduct);
     }
@@ -125,17 +93,6 @@ public class ProductServiceImp implements ProductService {
     public void deleteProduct(Integer code) {
         Product productFound = productRepository.findById(code).orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "id", code + ""));
 
-        List<ProductImage> images = productFound.getProductImages();
-
-        images.forEach(image -> {
-            Path filePath = Paths.get(AppConstants.RESOURCES_DIR + image.getPath());
-            try {
-                FileUtils.deleteFile(filePath);
-            } catch (IOException e) {
-                throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error");
-            }
-        });
-
         productRepository.delete(productFound);
     }
 
@@ -144,15 +101,7 @@ public class ProductServiceImp implements ProductService {
     }
 
     private ProductDto mapToDto(Product product) {
-        ProductDto productDto = modelMapper.typeMap(Product.class, ProductDto.class)
-                .addMappings(mapper -> mapper.skip(ProductDto::setImages)).map(product);
-
-        List<ProductDto.Image> images = product.getProductImages().stream()
-                .map(image -> new ProductDto.Image(image.getPath(), image.getName())).toList();
-
-        productDto.setImages(images);
-
-        return productDto;
+        return modelMapper.map(product, ProductDto.class);
     }
 
     @Autowired
@@ -160,9 +109,6 @@ public class ProductServiceImp implements ProductService {
 
     @Autowired
     private SupplierRepository supplierRepository;
-
-    @Autowired
-    private ProductImageRepository productImageRepository;
 
     @Autowired
     private ModelMapper modelMapper;

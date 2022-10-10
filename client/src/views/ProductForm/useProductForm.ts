@@ -19,13 +19,11 @@ interface Values {
 }
 
 interface UseProductFormResponse {
-  images: FileList | null
   handleInputChange: ChangeEventHandler<HTMLInputElement>
   handleSelectChange: (
     event: SelectChangeEvent<number>,
     child: ReactNode
   ) => void
-  handleImageInputchange: ChangeEventHandler<HTMLInputElement>
   isAdd: boolean
   values: Values
   handleSubmit: FormEventHandler<HTMLFormElement>
@@ -43,7 +41,6 @@ const initialValues: Values = {
 
 function useProductForm (): UseProductFormResponse {
   const [values, setValues] = useState<Values>(initialValues)
-  const [images, setImages] = useState<FileList | null>(null)
   const [suppliers, setSuppliers] = useState<SupplierResponse[]>([])
   const { pathname } = useLocation()
   const { productCode } = useParams()
@@ -93,18 +90,11 @@ function useProductForm (): UseProductFormResponse {
     setValues((prev) => ({ ...prev, supplierId: e.target.value as number }))
   }
 
-  const handleImageInputchange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setImages(e.target.files)
-  }
-
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
 
-    if (isAdd && images !== null) {
-      createProductRequest({
-        imageFiles: images,
-        product: values as ProductData
-      })
+    if (isAdd) {
+      createProductRequest(values as ProductData)
         .then(() => {
           navigate('/inventory')
         })
@@ -122,10 +112,8 @@ function useProductForm (): UseProductFormResponse {
   }
 
   return {
-    images,
     handleInputChange,
     handleSelectChange,
-    handleImageInputchange,
     isAdd,
     values,
     handleSubmit,

@@ -9,9 +9,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 @Getter @Setter
 public class ProductDto {
@@ -39,13 +37,4 @@ public class ProductDto {
     @NotNull
     private Integer supplierId;
 
-    private List<Image> images = new ArrayList<>();
-
-    @Getter @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Image {
-        private String url;
-        private String name;
-    }
 }

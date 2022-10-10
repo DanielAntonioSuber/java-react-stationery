@@ -1,19 +1,16 @@
 import { ReactElement, useEffect, useState } from 'react'
 
-import { Box, Container, ImageList, ImageListItem, Stack, Typography } from '@mui/material'
+import { Box, Container, Stack, Typography } from '@mui/material'
 import { useParams } from 'react-router-dom'
 
 import { getProductRequest } from '@/api/services/product'
 import { ProductResponse } from '@/api'
-
-import { BASE_URL_API } from '@/config/appProperties'
 
 const initialState = {
   amount: 0,
   articleName: '',
   brand: '',
   code: 0,
-  images: [],
   createdAt: '',
   retailPrice: 0,
   supplierId: 0,
@@ -76,24 +73,6 @@ function Product (): ReactElement {
           </Typography>
         </Box>
       </Stack>
-      <Box margin="5rem auto">
-        <ImageList
-          sx={{ width: 500, height: 450, margin: 'auto' }}
-          cols={product?.images.length}
-          rowHeight={164}
-        >
-          {product.images.map((image) => (
-            <ImageListItem key={image.name}>
-              <img
-                src={`${BASE_URL_API}${image.url}`}
-                srcSet={`${BASE_URL_API}${image.url}`}
-                loading="lazy"
-                alt={image.name}
-              />
-            </ImageListItem>
-          ))}
-        </ImageList>
-      </Box>
     </Container>
   )
 }

@@ -76,16 +76,6 @@ CREATE TABLE `sales` (
     PRIMARY KEY(`id`)
 );
 
-CREATE TABLE `product_images` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
-    `path` VARCHAR(255) NOT NULL,
-    `product_code` INTEGER NOT NULL,
-
-    PRIMARY KEY(`id`),
-    UNIQUE INDEX `product_images_name_key`(`name`)
-);
-
 ALTER TABLE `sales` ADD CONSTRAINT `sales_employee_id_fkey` FOREIGN KEY (`employee_id`) REFERENCES `employees`(`id`) ON DELETE  RESTRICT ON UPDATE CASCADE;
 
 ALTER TABLE `sales` ADD CONSTRAINT `sales_product_code_fkey` FOREIGN KEY (`product_code`) REFERENCES `products`(`code`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -93,6 +83,4 @@ ALTER TABLE `sales` ADD CONSTRAINT `sales_product_code_fkey` FOREIGN KEY (`produ
 ALTER TABLE `sales` ADD CONSTRAINT `sales_client_id_fkey` FOREIGN KEY (`client_id`) REFERENCES `clients`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 ALTER TABLE `products` ADD CONSTRAINT `products_supplier_id_fkey` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
-ALTER TABLE `product_images` ADD CONSTRAINT `product_images_product_code_fkey` FOREIGN KEY (`product_code`) REFERENCES `products`(`code`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
