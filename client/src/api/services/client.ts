@@ -1,8 +1,19 @@
-import { AxiosResponse } from 'axios'
-
 import api from '../api'
 
-import { ClientData, ClientResponse, ListResponse, PaginationParams } from '..'
+import { AxiosResponse } from 'axios'
+import { ListResponse, PaginationParams } from '..'
+
+export interface ClientData {
+  name: string
+  surname: string
+  phoneNumber: string
+  direction: string
+  email: string
+}
+
+export interface ClientResponse extends ClientData {
+  id: number
+}
 
 const createClientRequest = async (data: ClientData): Promise<AxiosResponse<ClientResponse, any>> =>
   await api.post('/clients', data)

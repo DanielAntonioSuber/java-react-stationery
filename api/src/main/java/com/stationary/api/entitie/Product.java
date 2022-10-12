@@ -52,7 +52,4 @@ public class Product {
     @OneToMany(mappedBy = "product", orphanRemoval = true)
     private List<Sale> sales = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", orphanRemoval = true)
-    private List<ProductImage> productImages = new ArrayList<>();
-
 }

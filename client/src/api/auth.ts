@@ -1,8 +1,36 @@
-import { AxiosResponse } from 'axios'
-
 import api from './api'
 
-import { EmployeeData, LoginData, LoginRespone, RegisterResponse } from '.'
+import { AxiosResponse } from 'axios'
+
+export interface EmployeeData {
+  name: string
+  surname: string
+  role: string
+  email: string
+  direction: string
+  salary: string
+  schedule: string
+  rfc: string
+  phoneNumber: string
+  password: string
+}
+
+export interface LoginRespone {
+  accessToken: string
+  kindToken: string
+  role: string
+}
+
+export interface LoginData {
+  emailOrRfc: string
+  password: string
+}
+
+export interface RegisterResponse extends EmployeeData {
+  id: number
+  createdAt: Date
+  updatedAt: Date
+}
 
 const loginRequest = async (data: LoginData): Promise<AxiosResponse<LoginRespone>> =>
   await api.post('/auth/login', data)

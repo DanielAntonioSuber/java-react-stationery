@@ -1,6 +1,16 @@
-import { AxiosResponse } from 'axios'
-import { ListResponse, PaginationParams, SupplierData, SupplierResponse } from '..'
 import api from '../api'
+
+import { AxiosResponse } from 'axios'
+import { ListResponse, PaginationParams } from '..'
+
+export interface SupplierData {
+  supplierName: string
+  rfc: string
+}
+
+export interface SupplierResponse extends SupplierData {
+  id: number
+}
 
 const createSupplierRequest = async (data: SupplierData): Promise<AxiosResponse<SupplierResponse, any>> =>
   await api.post('/suppliers', data)

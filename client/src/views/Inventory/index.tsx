@@ -9,15 +9,14 @@ import useProducts from './useProducts'
 
 function Inventory (): ReactElement {
   const {
-    handleChangePage,
-    handleChangeRowsPerPage,
-    paginationOptions,
-    products,
-    handleCancel,
-    handleClose,
-    handleConfirm,
-    handleDeleteProduct,
-    open
+    confirmDialog: { handleCancel, handleClose, handleConfirm, open },
+    createHandleDeleteProduct,
+    pagination: {
+      handleChangePage,
+      handleChangeRowsPerPage,
+      paginationOptions
+    },
+    products
   } = useProducts()
 
   return (
@@ -83,9 +82,7 @@ function Inventory (): ReactElement {
                     </Button>
                     <Button
                       color="error"
-                      onClick={() => {
-                        handleDeleteProduct(product.code)
-                      }}
+                      onClick={createHandleDeleteProduct(product.code)}
                     >
                       Delete
                     </Button>

@@ -1,9 +1,3 @@
-import useAuth from './useAuth'
-import usePaginationOptions from './usePaginationOptions'
-import useConfirmDialog from './useConfirmDialog'
-
-export {
-  useAuth,
-  usePaginationOptions,
-  useConfirmDialog
-}
+export * from './useAuth'
+export * from './useConfirmDialog'
+export * from './usePaginationOptions'

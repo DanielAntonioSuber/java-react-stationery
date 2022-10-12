@@ -1,10 +1,10 @@
 import { ReactElement, useEffect, useState } from 'react'
 
 import { Box, Container, Stack, Typography } from '@mui/material'
+
 import { useParams } from 'react-router-dom'
 
-import { getProductRequest } from '@/api/services/product'
-import { ProductResponse } from '@/api'
+import { getProductRequest, ProductResponse } from '@/api'
 
 const initialState = {
   amount: 0,

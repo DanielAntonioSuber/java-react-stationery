@@ -1,16 +1,14 @@
 import { ReactElement } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { AttachMoney, Inventory, LocalShipping, Person } from '@mui/icons-material'
 import { Button, Container, Stack } from '@mui/material'
 
 function Home (): ReactElement {
-  const navigate = useNavigate()
-
   return (
     <Container >
       <Stack spacing={2} margin='5rem'>
-        <Button variant="contained" sx={{ height: '80px' }} endIcon={<Inventory />} onClick={() => navigate('/inventory')}>
+        <Button variant="contained" sx={{ height: '80px' }} component={Link} endIcon={<Inventory />} to="/inventory" >
           Inventory
         </Button>
         <Button variant="contained" sx={{ height: '80px' }} endIcon={<AttachMoney />}>
@@ -19,7 +17,7 @@ function Home (): ReactElement {
         <Button variant="contained" sx={{ height: '80px' }} endIcon={<Person />}>
           Clients
         </Button>
-        <Button variant="contained" sx={{ height: '80px' }} endIcon={<LocalShipping />}>
+        <Button variant="contained" sx={{ height: '80px' }} endIcon={<LocalShipping />} component={Link} to="/suppliers">
           Suppliers
         </Button>
       </Stack>

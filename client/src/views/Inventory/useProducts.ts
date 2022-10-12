@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react'
 
-import { PaginationParams, ProductResponse } from '@/api'
-import { PaginationOptionsReturn } from '@/hooks/usePaginationOptions'
+import { deleteProductRequest, getProductsRequest, PaginationParams, ProductResponse } from '@/api'
 
-import { deleteProductRequest, getProductsRequest } from '@/api/services/product'
-import { useConfirmDialog, usePaginationOptions } from '@/hooks'
-import { UseConfirmDialogReturn } from '@/hooks/useConfirmDialog'
+import { PaginationOptionsReturn, useConfirmDialog, UseConfirmDialogReturn, usePaginationOptions } from '@/hooks'
 
-type UseProductsReturn = Omit<PaginationOptionsReturn, 'setTotalElements'> & {
+interface UseProductsReturn {
   products: ProductResponse[]
-  handleDeleteProduct: (code: number) => void
-} & Omit<UseConfirmDialogReturn, 'confirm'>
+  confirmDialog: Omit<UseConfirmDialogReturn, 'confirm'>
+  pagination: Omit<PaginationOptionsReturn, 'setTotalElements'>
+  createHandleDeleteProduct: (code: number) => () => void
+}
 
 function useProducts (): UseProductsReturn {
   const [products, setProducts] = useState<ProductResponse[]>([])
@@ -28,31 +27,30 @@ function useProducts (): UseProductsReturn {
 
   useEffect(() => {
     fetchProducts({ pageNumber: paginationOptions.page, sizePage: paginationOptions.rowsPerPage })
-  }, [])
-
-  useEffect(() => {
-    fetchProducts({ pageNumber: paginationOptions.page, sizePage: paginationOptions.rowsPerPage })
   }, [paginationOptions.page, paginationOptions.rowsPerPage])
 
-  const handleDeleteProduct: (code: number) => void = (code) => {
-    confirm()
+  const createHandleDeleteProduct: (code: number) => () => void = (code) => async () =>
+    await confirm()
       .then(async () => await deleteProductRequest(code))
       .then(() => { fetchProducts({ pageNumber: paginationOptions.page, sizePage: paginationOptions.rowsPerPage }) })
       .catch(() => {
 
       })
-  }
 
   return {
     products,
-    handleChangePage,
-    handleChangeRowsPerPage,
-    paginationOptions,
-    handleCancel,
-    handleClose,
-    handleConfirm,
-    open,
-    handleDeleteProduct
+    pagination: {
+      handleChangePage,
+      handleChangeRowsPerPage,
+      paginationOptions
+    },
+    confirmDialog: {
+      handleCancel,
+      handleClose,
+      handleConfirm,
+      open
+    },
+    createHandleDeleteProduct
   }
 }
 

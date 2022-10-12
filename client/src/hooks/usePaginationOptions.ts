@@ -45,6 +45,6 @@ function usePaginationOptions (totalElements: number = 10): PaginationOptionsRet
   }
 }
 
-export default usePaginationOptions
+export { usePaginationOptions }
 
 export type { PaginationOptions, PaginationOptionsReturn }

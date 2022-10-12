@@ -8,4 +8,4 @@ function useAuth (): AuthContextType {
   return context
 }
 
-export default useAuth
+export { useAuth }

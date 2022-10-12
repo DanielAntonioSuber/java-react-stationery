@@ -1,7 +1,22 @@
-import { AxiosResponse } from 'axios'
-
 import api from '../api'
-import { ListResponse, PaginationParams, ProductData, ProductResponse } from '..'
+
+import { AxiosResponse } from 'axios'
+import { ListResponse, PaginationParams } from '..'
+
+export interface ProductData {
+  articleName: string
+  wholesalePrice: number
+  retailPrice: number
+  amount: number
+  brand: string
+  supplierId: number
+}
+
+export interface ProductResponse extends ProductData {
+  code: number
+  createdAt: string
+  updatedAt: string
+}
 
 const createProductRequest = async (data: ProductData): Promise<AxiosResponse<ProductResponse, any>> =>
   await api.post('/products', data)

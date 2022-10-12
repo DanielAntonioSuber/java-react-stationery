@@ -4,10 +4,7 @@ import { SelectChangeEvent } from '@mui/material'
 
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
-import { createProductRequest, getProductRequest, updateProductRequest } from '@/api/services/product'
-import { getSuppliersRequest } from '@/api/services/supplier'
-
-import { ProductData, SupplierResponse } from '@/api'
+import { createProductRequest, getProductRequest, getSuppliersRequest, ProductData, SupplierResponse, updateProductRequest } from '@/api'
 
 interface Values {
   amount: number | ''
@@ -45,6 +42,7 @@ function useProductForm (): UseProductFormResponse {
   const { pathname } = useLocation()
   const { productCode } = useParams()
   const navigate = useNavigate()
+
   const isAdd = pathname.includes('add')
 
   useEffect(() => {
@@ -96,7 +94,7 @@ function useProductForm (): UseProductFormResponse {
     if (isAdd) {
       createProductRequest(values as ProductData)
         .then(() => {
-          navigate('/inventory')
+          navigate(-1)
         })
         .catch(() => {})
     } else if (productCode != null) {
@@ -105,7 +103,7 @@ function useProductForm (): UseProductFormResponse {
         values as ProductData
       )
         .then(() => {
-          navigate('/inventory')
+          navigate(-1)
         })
         .catch(() => {})
     }
