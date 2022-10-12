@@ -15,7 +15,7 @@ export interface SupplierResponse extends SupplierData {
 const createSupplierRequest = async (data: SupplierData): Promise<AxiosResponse<SupplierResponse, any>> =>
   await api.post('/suppliers', data)
 
-const getSupplierRequest = async (id: number): Promise<AxiosResponse<SupplierData, any>> =>
+const getSupplierRequest = async (id: number): Promise<AxiosResponse<SupplierResponse, any>> =>
   await api.get(`/suppliers/${id}`)
 
 const getSuppliersRequest = async (paginationParams: PaginationParams): Promise<AxiosResponse<ListResponse<SupplierResponse>, any>> => {

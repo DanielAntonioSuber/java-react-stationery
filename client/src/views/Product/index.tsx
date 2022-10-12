@@ -1,12 +1,12 @@
 import { ReactElement, useEffect, useState } from 'react'
 
-import { Box, Container, Stack, Typography } from '@mui/material'
+import { Container, Stack, Typography } from '@mui/material'
 
 import { useParams } from 'react-router-dom'
 
 import { getProductRequest, ProductResponse } from '@/api'
 
-const initialState = {
+const initialState: ProductResponse = {
   amount: 0,
   articleName: '',
   brand: '',
@@ -36,12 +36,11 @@ function Product (): ReactElement {
         component="h1"
         variant="h2"
         align="center"
-        margin="0.5rem auto 4rem"
+        margin="0.5rem auto 1rem"
       >
         Product {product.code}
       </Typography>
-      <Stack direction="row">
-        <Box margin="auto">
+      <Stack direction="column" alignItems="center">
           <Typography component="p" variant="body1">
             Code: {product?.code}
           </Typography>
@@ -57,8 +56,6 @@ function Product (): ReactElement {
           <Typography component="p" variant="body1">
             Retail Price: {product?.retailPrice}
           </Typography>
-        </Box>
-        <Box margin="0 auto auto auto">
           <Typography component="p" variant="body1">
             Wholesale Price: {product?.wholesalePrice}
           </Typography>
@@ -71,7 +68,6 @@ function Product (): ReactElement {
           <Typography component="p" variant="body1">
             Supplier: {product?.supplierId}
           </Typography>
-        </Box>
       </Stack>
     </Container>
   )

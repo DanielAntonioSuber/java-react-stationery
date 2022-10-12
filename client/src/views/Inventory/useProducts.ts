@@ -29,13 +29,14 @@ function useProducts (): UseProductsReturn {
     fetchProducts({ pageNumber: paginationOptions.page, sizePage: paginationOptions.rowsPerPage })
   }, [paginationOptions.page, paginationOptions.rowsPerPage])
 
-  const createHandleDeleteProduct: (code: number) => () => void = (code) => async () =>
+  const createHandleDeleteProduct: (code: number) => () => void = (code) => async () => {
     await confirm()
       .then(async () => await deleteProductRequest(code))
       .then(() => { fetchProducts({ pageNumber: paginationOptions.page, sizePage: paginationOptions.rowsPerPage }) })
       .catch(() => {
 
       })
+  }
 
   return {
     products,

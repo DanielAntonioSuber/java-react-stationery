@@ -53,23 +53,14 @@ function useProductForm (): UseProductFormResponse {
     if (!isAdd && productCode != null) {
       getProductRequest(productCode as unknown as number)
         .then(
-          ({
-            data: {
-              amount,
-              articleName,
-              brand,
-              retailPrice,
-              supplierId,
-              wholesalePrice
-            }
-          }) => {
+          ({ data }) => {
             setValues({
-              amount,
-              articleName,
-              brand,
-              retailPrice,
-              supplierId,
-              wholesalePrice
+              amount: data.amount,
+              articleName: data.articleName,
+              brand: data.brand,
+              retailPrice: data.retailPrice,
+              supplierId: data.supplierId,
+              wholesalePrice: data.wholesalePrice
             })
           }
         )

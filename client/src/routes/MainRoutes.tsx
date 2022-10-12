@@ -12,10 +12,11 @@ const Login = Loadable(lazy(async () => await import('@/views/Login')))
 const Inventory = Loadable(lazy(async () => await import('@/views/Inventory')))
 const Home = Loadable(lazy(async () => await import('@/views/Home')))
 const Register = Loadable(lazy(async () => await import('@/views/Register')))
-const ProductForm = Loadable(
-  lazy(async () => await import('@/views/ProductForm'))
-)
+const ProductForm = Loadable(lazy(async () => await import('@/views/ProductForm')))
 const Product = Loadable(lazy(async () => await import('@/views/Product')))
+const Suppliers = Loadable(lazy(async () => await import('@/views/Suppliers')))
+const SupplierForm = Loadable(lazy(async () => await import('@/views/SupplierForm')))
+const Supplier = Loadable(lazy(async () => await import('@/views/Supplier')))
 
 function MainRoutes (): ReactElement {
   const [authState] = useAuth()
@@ -70,6 +71,38 @@ function MainRoutes (): ReactElement {
           element={
             <ProtectedRoute isAllowed={authState.isLogged}>
               <Product />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="suppliers/:supplierId"
+          element={
+            <ProtectedRoute isAllowed={authState.isLogged}>
+              <Supplier />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="suppliers"
+          element={
+            <ProtectedRoute isAllowed={authState.isLogged}>
+              <Suppliers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="suppliers/add"
+          element={
+            <ProtectedRoute isAllowed={authState.isLogged}>
+              <SupplierForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="suppliers/:supplierId/edit"
+          element={
+            <ProtectedRoute isAllowed={authState.isLogged}>
+              <SupplierForm />
             </ProtectedRoute>
           }
         />
