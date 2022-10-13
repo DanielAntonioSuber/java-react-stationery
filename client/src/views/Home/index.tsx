@@ -12,9 +12,9 @@ function Home (): ReactElement {
           Inventory
         </Button>
         <Button variant="contained" sx={{ height: '80px' }} endIcon={<AttachMoney />}>
-          Sell
+          Sells
         </Button>
-        <Button variant="contained" sx={{ height: '80px' }} endIcon={<Person />}>
+        <Button variant="contained" sx={{ height: '80px' }} endIcon={<Person />} component={Link} to="/clients">
           Clients
         </Button>
         <Button variant="contained" sx={{ height: '80px' }} endIcon={<LocalShipping />} component={Link} to="/suppliers">

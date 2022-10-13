@@ -17,6 +17,9 @@ const Product = Loadable(lazy(async () => await import('@/views/Product')))
 const Suppliers = Loadable(lazy(async () => await import('@/views/Suppliers')))
 const SupplierForm = Loadable(lazy(async () => await import('@/views/SupplierForm')))
 const Supplier = Loadable(lazy(async () => await import('@/views/Supplier')))
+const Clients = Loadable(lazy(async () => await import('@/views/Clients')))
+const ClientForm = Loadable(lazy(async () => await import('@/views/ClientForm')))
+const Client = Loadable(lazy(async () => await import('@/views/Client')))
 
 function MainRoutes (): ReactElement {
   const [authState] = useAuth()
@@ -103,6 +106,38 @@ function MainRoutes (): ReactElement {
           element={
             <ProtectedRoute isAllowed={authState.isLogged}>
               <SupplierForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="clients"
+          element={
+            <ProtectedRoute isAllowed={authState.isLogged}>
+              <Clients />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="clients/:clientId"
+          element={
+            <ProtectedRoute isAllowed={authState.isLogged}>
+              <Client />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="clients/:clientId/edit"
+          element={
+            <ProtectedRoute isAllowed={authState.isLogged}>
+              <ClientForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="clients/add"
+          element={
+            <ProtectedRoute isAllowed={authState.isLogged}>
+              <ClientForm />
             </ProtectedRoute>
           }
         />
