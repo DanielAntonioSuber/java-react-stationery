@@ -2,8 +2,7 @@ import { createContext, ReactElement, ReactNode, Reducer, useReducer } from 'rea
 
 import { AxiosResponse } from 'axios'
 
-import { LoginData, LoginRespone } from '@/api'
-import { loginRequest, removeTokenInHeader, setTokenInHeaders } from '@/api/auth'
+import { LoginData, loginRequest, LoginRespone, removeTokenInHeader, setTokenInHeaders } from '@/api/auth'
 
 interface AuthState {
   isLogged: boolean
